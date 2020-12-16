@@ -1,46 +1,80 @@
 import React, { Component } from 'react';
 import "./PathVisualizer.css";
 import Node from "../Node/Node";
+import { dijkstra } from '../../algorithms/dijkstra';
+
+const START_NODE_ROW = 10;
+const START_NODE_COL = 15;
+const FINISH_NODE_COL = 35;
+const FINISH_NODE_ROW = 10;
 
 class PathVisualizer extends Component {
     state = { 
-        nodes: []
+        grid: []
     }
     
     componentDidMount() {
         // generating the grid matrix
-        let nodes = [];
-        for (let r = 0; r < 20; r++) {
+        let grid = getInitialGrid();
+        /*for (let r = 0; r < 20; r++) {
             let currRow = [];
             for (let c = 0; c < 50; c++) {
                 const currNode = {
                     c,
                     r,
-                    isStart: r === 10 && c === 5,
-                    isFinish: r === 10 && c === 45
+                    isStart: r === START_NODE_ROW && c === START_NODE_COL,
+                    isFinish: r === FINISH_NODE_ROW && c === FINISH_NODE_COL
                 }
                 currRow.push(currNode);
             }
-            nodes.push(currRow);
+            grid.push(currRow);
+        }*/
+        this.setState({ grid });
+    }
+
+    animateDijkstra = (visitedNodesInOrder) => {
+        for (let i = 0; i < visitedNodesInOrder.length; i++) {
+            setTimeout(() => {
+                const node = visitedNodesInOrder[i];
+                const newGrid = this.state.grid.slice();
+                const newNode = {
+                    ...node,
+                    isVisited: true,
+                };
+                newGrid[node.r][node.c] = newNode;
+                this.setState({ gird: newGrid });
+            }, 500 * i);
         }
-        this.setState({ nodes });
+    }
+
+    visualizeDijkstra() {
+        const { grid } = this.state;
+        const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+        console.log(visitedNodesInOrder);
+        this.animateDijkstra(visitedNodesInOrder);
+
     }
 
     render() { 
-        const { nodes } = this.state;
+        const { grid } = this.state;
         return ( 
             // displaying the grid
+            <>
+            <button onClick={() => this.visualizeDijkstra()}>click</button>
             <div className="grid">
-                {nodes.map((row, rowIdx) => {
+                {grid.map((row, rowIdx) => {
                     return (
                         <div key={rowIdx}>
                             {row.map((node, nodeIdx) => {
-                                const { isStart, isFinish } = node;
+                                const { isStart, isFinish, isVisited } = node;
                                 return (
                                     <Node
                                         key={nodeIdx}
                                         isStart={isStart}
                                         isFinish={isFinish}
+                                        isVisited={isVisited}
                                     ></Node>
                                 )
                             })}
@@ -48,8 +82,32 @@ class PathVisualizer extends Component {
                     )
                 })}
             </div>
+            </>
          );
     }
 }
- 
+
+const getInitialGrid = () => {
+    const grid = [];
+    for (let r = 0; r < 20; r++) {
+        const currRow = [];
+        for (let c = 0; c < 50; c++) {
+            currRow.push(createNode(c, r));
+        }
+        grid.push(currRow);
+    }
+    return grid;
+}
+
+const createNode = (c, r) => {
+    return {
+        c,
+        r,
+        isStart: r === START_NODE_ROW && c === START_NODE_COL,
+        isFinish: r === FINISH_NODE_ROW && c === FINISH_NODE_COL,
+        isVisited: false,
+        distance: Infinity
+    }
+}
+
 export default PathVisualizer;

@@ -13,3 +13,7 @@
 .node-finish {
     background-color: red;
 }
+
+.node-visited {
+    background-color: cyan;
+}
