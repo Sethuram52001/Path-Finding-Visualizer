@@ -1,142 +1,108 @@
 import React, { Component } from 'react';
 import "./PathVisualizer.css";
 import Node from "../Node/Node";
-import { dijkstra } from '../../algorithms/dijkstra';
 
+// constants
 const START_NODE_ROW = 10;
 const START_NODE_COL = 15;
-const FINISH_NODE_COL = 35;
 const FINISH_NODE_ROW = 10;
+const FINISH_NODE_COL = 35;
 
 class PathVisualizer extends Component {
-    state = { 
+    state = {
         grid: [],
-        mouseIsPressed: false,
+        mouseIsPressed: false
     }
     
-    componentDidMount() {
-        // generating the grid matrix
+    componentDidMount() { 
         let grid = getInitialGrid();
-        /*for (let r = 0; r < 20; r++) {
-            let currRow = [];
-            for (let c = 0; c < 50; c++) {
-                const currNode = {
-                    c,
-                    r,
-                    isStart: r === START_NODE_ROW && c === START_NODE_COL,
-                    isFinish: r === FINISH_NODE_ROW && c === FINISH_NODE_COL
-                }
-                currRow.push(currNode);
-            }
-            grid.push(currRow);
-        }*/
         this.setState({ grid });
     }
 
-    handleMouseDown = (r, c) => {
-        const newGrid = getNewGridWithWallToggled(this.state.grid, r, c);
+    // handling mouse events to set up walls
+    handleMouseDown(row, col) {
+        const newGrid = gridWithWallToggled(this.state.grid, row, col);
         this.setState({ grid: newGrid, mouseIsPressed: true });
     }
 
-    handleMouseEnter = (r, c) => {
+    handleMouseEnter(row, col) {
         if (!this.state.mouseIsPressed)
             return;
-        const newGrid = getNewGridWithWallToggled(this.state.grid, r, c);
-        this.setState({ grid:newGrid  });
+        const newGrid = gridWithWallToggled(this.state.grid, row, col);
+        this.setState({ grid: newGrid });
     }
 
     handleMouseUp() {
         this.setState({ mouseIsPressed: false });
-    }
-
-    animateDijkstra = (visitedNodesInOrder) => {
-        for (let i = 0; i < visitedNodesInOrder.length; i++) {
-            setTimeout(() => {
-                const node = visitedNodesInOrder[i];
-                const newGrid = this.state.grid.slice();
-                const newNode = {
-                    ...node,
-                    isVisited: true,
-                };
-                newGrid[node.r][node.c] = newNode;
-                this.setState({ gird: newGrid });
-            }, 100*i );
-        }
-    }
-
-    visualizeDijkstra() {
-        const { grid } = this.state;
-        const startNode = grid[START_NODE_ROW][START_NODE_COL];
-        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-        const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
-        console.log(visitedNodesInOrder);
-        this.animateDijkstra(visitedNodesInOrder);
-
+        //console.log("mouse up is called")
     }
 
     render() { 
-        const { grid } = this.state;
+        const { grid, mouseIsPressed } = this.state;
         return ( 
-            // displaying the grid
             <>
-            <button onClick={() => this.visualizeDijkstra()}>click</button>
-            <div className="grid">
-                {grid.map((row, rowIdx) => {
-                    return (
-                        <div key={rowIdx}>
-                            {row.map((node, nodeIdx) => {
-                                const { isStart, isFinish, isVisited } = node;
-                                return (
-                                    <Node
-                                        key={nodeIdx}
-                                        isStart={isStart}
-                                        isFinish={isFinish}
-                                        isVisited={isVisited}
-                                    ></Node>
-                                )
-                            })}
-                        </div>
-                    )
-                })}
-            </div>
+                <div className="grid">
+                    {grid.map((row, rowIdx) => {
+                        return (
+                            <div key={rowIdx}>
+                                {row.map((node, nodeIdx) => {
+                                    const { row, col, isStart, isFinish, isWall } = node;
+                                    return (
+                                        <Node
+                                            key={nodeIdx}
+                                            row={row}
+                                            col={col}
+                                            isStart={isStart}
+                                            isFinish={isFinish}
+                                            isWall={isWall}
+                                            mouseIsPressed={mouseIsPressed}
+                                            onMouseDown={(row, col) => this.handleMouseDown(row, col)}
+                                            onMouseEnter={(row, col) => this.handleMouseEnter(row, col)}
+                                            onMouseUp={() => this.handleMouseUp()}
+                                        />
+                                    )
+                                })}
+                            </div>
+                        )
+                    })}
+                </div>
             </>
          );
     }
 }
+ 
+export default PathVisualizer;
 
+// helper functions
 const getInitialGrid = () => {
-    const grid = [];
-    for (let r = 0; r < 20; r++) {
+    let grid = [];
+    for (let row = 0; row < 20; row++) {
         const currRow = [];
-        for (let c = 0; c < 50; c++) {
-            currRow.push(createNode(c, r));
+        for (let col = 0; col < 50; col++) {
+            currRow.push(createNode(row, col));
         }
         grid.push(currRow);
     }
     return grid;
 }
 
-const createNode = (c, r) => {
+const createNode = (row, col) => {
     return {
-        c,
-        r,
-        isStart: r === START_NODE_ROW && c === START_NODE_COL,
-        isFinish: r === FINISH_NODE_ROW && c === FINISH_NODE_COL,
-        isVisited: false,
-        distance: Infinity,
+        row,
+        col,
+        isStart: row === START_NODE_ROW && col === START_NODE_COL,
+        isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
         isWall: false
     }
 }
 
-const getNewGridWithWallToggled = (grid, r, c) => {
-    const newGrid = grid.slice();
-    const node = newGrid[r][c];
+const gridWithWallToggled = (grid, row, col) => {
+    let newGrid = grid.slice();
+    const node = newGrid[row][col];
     const newNode = {
         ...node,
         isWall: !node.isWall
     }
-    newGrid[r][c] = newNode;
+    newGrid[row][col] = newNode;
     return newGrid;
 }
-
-export default PathVisualizer;

@@ -2,7 +2,6 @@
     width: 20px;
     height: 20px;
     outline: 1px solid black;
-    /*border: 1px solid black;*/
     display: inline-block;
 }
 
@@ -14,6 +13,6 @@
     background-color: red;
 }
 
-.node-visited {
-    background-color: cyan;
+.node-wall {
+    background-color: black;
 }
