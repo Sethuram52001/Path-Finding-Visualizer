@@ -10,7 +10,8 @@ const FINISH_NODE_ROW = 10;
 
 class PathVisualizer extends Component {
     state = { 
-        grid: []
+        grid: [],
+        mouseIsPressed: false,
     }
     
     componentDidMount() {
@@ -32,6 +33,22 @@ class PathVisualizer extends Component {
         this.setState({ grid });
     }
 
+    handleMouseDown = (r, c) => {
+        const newGrid = getNewGridWithWallToggled(this.state.grid, r, c);
+        this.setState({ grid: newGrid, mouseIsPressed: true });
+    }
+
+    handleMouseEnter = (r, c) => {
+        if (!this.state.mouseIsPressed)
+            return;
+        const newGrid = getNewGridWithWallToggled(this.state.grid, r, c);
+        this.setState({ grid:newGrid  });
+    }
+
+    handleMouseUp() {
+        this.setState({ mouseIsPressed: false });
+    }
+
     animateDijkstra = (visitedNodesInOrder) => {
         for (let i = 0; i < visitedNodesInOrder.length; i++) {
             setTimeout(() => {
@@ -43,7 +60,7 @@ class PathVisualizer extends Component {
                 };
                 newGrid[node.r][node.c] = newNode;
                 this.setState({ gird: newGrid });
-            }, 500 * i);
+            }, 100*i );
         }
     }
 
@@ -106,8 +123,20 @@ const createNode = (c, r) => {
         isStart: r === START_NODE_ROW && c === START_NODE_COL,
         isFinish: r === FINISH_NODE_ROW && c === FINISH_NODE_COL,
         isVisited: false,
-        distance: Infinity
+        distance: Infinity,
+        isWall: false
     }
+}
+
+const getNewGridWithWallToggled = (grid, r, c) => {
+    const newGrid = grid.slice();
+    const node = newGrid[r][c];
+    const newNode = {
+        ...node,
+        isWall: !node.isWall
+    }
+    newGrid[r][c] = newNode;
+    return newGrid;
 }
 
 export default PathVisualizer;
