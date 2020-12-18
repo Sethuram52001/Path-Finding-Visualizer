@@ -39,44 +39,40 @@ class PathVisualizer extends Component {
         //console.log("mouse up is called")
     }
 
-    // animate
-    animateDijkstra = (visitedNodesInOrder,nodesInShortestPath) => {
-        //console.log(visitedNodesInOrder);
-        for (let i = 0; i <= visitedNodesInOrder.length; i++) {
-            /*if (i === visitedNodesInOrder.length) {
-                setTimeout(() => {
-                    this.animateShortestPath(nodesInShortestPath);
-                }, 10 * i);
-            }*/
-            console.log(visitedNodesInOrder[i]);
-            setTimeout(() => {
-                const node = visitedNodesInOrder[i];
-                document.getElementById(`node-${node.row}-${node.col}`).className = `node node-visited`
-            }, 10*i);
-        }
+  animateDijkstra = (visitedNodesInOrder, nodesInShortestPathOrder) => {
+    for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+      if (i === visitedNodesInOrder.length) {
+        setTimeout(() => {
+          this.animateShortestPath(nodesInShortestPathOrder);
+        }, 10 * i);
+        return;
+      }
+      setTimeout(() => {
+        const node = visitedNodesInOrder[i];
+        document.getElementById(`node-${node.row}-${node.col}`).className =
+          'node node-visited';
+      }, 10 * i);
     }
+  }
 
-    /*animateShortestPath = (nodesInShortestPath) => {
-        for (let i = 0; i < nodesInShortestPath.length; i++) {
-            setTimeout(() => {
-                const node = nodesInShortestPath[i];
-                document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-shortest-path'
-            })
-        }
-    }*/
-    
-    // visualization
-    visualizeDijkstra = () => {
-        //console.log('visualize dijkstra');
-        let { grid } = this.state;
-        const startNode = grid[START_NODE_ROW][START_NODE_COL];
-        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-        //console.log(startNode + " " + finishNode);
-        const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
-        //console.log(visitedNodesInOrder);
-        const nodesInShortestPath = getNodesInShortestPathOrder(finishNode);
-        this.animateDijkstra(visitedNodesInOrder,nodesInShortestPath);
+  animateShortestPath = (nodesInShortestPathOrder) => {
+    for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
+      setTimeout(() => {
+        const node = nodesInShortestPathOrder[i];
+        document.getElementById(`node-${node.row}-${node.col}`).className =
+          'node node-shortest-path';
+      }, 50 * i);
     }
+  }
+
+  visualizeDijkstra = () => {
+    const {grid} = this.state;
+    const startNode = grid[START_NODE_ROW][START_NODE_COL];
+    const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+    const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+    this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+  }
 
     render() { 
         const { grid, mouseIsPressed } = this.state;
@@ -90,7 +86,7 @@ class PathVisualizer extends Component {
                         return (
                             <div key={rowIdx}>
                                 {row.map((node, nodeIdx) => {
-                                    const { row, col, isStart, isFinish, isWall, distance, isVisited } = node;
+                                    const { row, col, isStart, isFinish, isWall } = node;
                                     return (
                                         <Node
                                             key={nodeIdx}
