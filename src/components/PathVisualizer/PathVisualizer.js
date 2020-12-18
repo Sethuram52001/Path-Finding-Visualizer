@@ -43,11 +43,11 @@ class PathVisualizer extends Component {
     animateDijkstra = (visitedNodesInOrder,nodesInShortestPath) => {
         //console.log(visitedNodesInOrder);
         for (let i = 0; i <= visitedNodesInOrder.length; i++) {
-            if (i === visitedNodesInOrder.length) {
+            /*if (i === visitedNodesInOrder.length) {
                 setTimeout(() => {
                     this.animateShortestPath(nodesInShortestPath);
                 }, 10 * i);
-            }
+            }*/
             console.log(visitedNodesInOrder[i]);
             setTimeout(() => {
                 const node = visitedNodesInOrder[i];
@@ -56,14 +56,14 @@ class PathVisualizer extends Component {
         }
     }
 
-    animateShortestPath = (nodesInShortestPath) => {
+    /*animateShortestPath = (nodesInShortestPath) => {
         for (let i = 0; i < nodesInShortestPath.length; i++) {
             setTimeout(() => {
                 const node = nodesInShortestPath[i];
                 document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-shortest-path'
             })
         }
-    }
+    }*/
     
     // visualization
     visualizeDijkstra = () => {
