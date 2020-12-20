@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Container } from "reactstrap";
 import "./PathVisualizer.css";
 import Node from "../Node/Node";
-import { dijkstra, dfs, getNodesInShortestPathOrder } from "../../algorithms";
+import { dijkstra,getNodesInShortestPathOrder, dfs } from "../../algorithms";
 import { animateDijkstra } from "../../visualizers/dijkstra.visualizers";
 
 // constants
@@ -55,7 +55,12 @@ class PathVisualizer extends Component {
         const {grid} = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-        console.log(dfs(grid, startNode, finishNode));
+        //console.log("dfs was called:", dfs(grid, startNode, finishNode));
+        const visitedNodesInOrder = dfs(grid, startNode, finishNode);
+        for (let i = 0; i < visitedNodesInOrder.length; i++) {
+            const node = visitedNodesInOrder[i];
+            document.getElementById(`node-${node.row}-${node.col}`).className = `node node-visited`;
+        }
     }
 
     render() { 
