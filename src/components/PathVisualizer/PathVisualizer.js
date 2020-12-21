@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Button, Container } from "reactstrap";
 import "./PathVisualizer.css";
 import Node from "../Node/Node";
-import { dijkstra,getNodesInShortestPathOrder, dfs } from "../../algorithms";
-import { animateDijkstra } from "../../visualizers/dijkstra.visualizers";
+import { dijkstra,getNodesInShortestPathOrder, dfs, bfs, astar } from "../../algorithms";
+import { animateDijkstra, animateDFS, animateBFS } from "../../visualizers";
 
 // constants
 const START_NODE_ROW = 10;
@@ -57,10 +57,27 @@ class PathVisualizer extends Component {
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         //console.log("dfs was called:", dfs(grid, startNode, finishNode));
         const visitedNodesInOrder = dfs(grid, startNode, finishNode);
+        animateDFS(visitedNodesInOrder);
+    }
+
+    // bfs
+    visualizeBFS = () => {
+        const {grid} = this.state;
+        const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const visitedNodesInOrder = bfs(grid, startNode, finishNode);
         for (let i = 0; i < visitedNodesInOrder.length; i++) {
             const node = visitedNodesInOrder[i];
             document.getElementById(`node-${node.row}-${node.col}`).className = `node node-visited`;
         }
+    }
+
+    // astar
+    visualizeAstar = () => {
+        const { grid } = this.state;
+        const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const visitedNodesInOrder = astar();
     }
 
     render() { 
@@ -70,6 +87,8 @@ class PathVisualizer extends Component {
                 <Container>
                     <Button onClick={this.visualizeDijkstra}>visualize dijkstra</Button>
                     <Button onClick={this.visualizeDFS}>visualize DFS</Button>
+                    <Button onClick={this.visualizeBFS}>visualize BFS</Button>
+                    <Button onClick={this.visualizeAstar}>visualize A*</Button>
                 </Container>
                 <div className="grid">
                     {grid.map((row, rowIdx) => {

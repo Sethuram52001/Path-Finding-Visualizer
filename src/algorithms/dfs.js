@@ -2,6 +2,8 @@ export function dfs(grid, startNode, finishNode) {
   const visitedNodesInOrder = [];
   const unvisitedNodes = getAllNodes(grid);
   startNode.isVisited = true;
+  let explored = [];
+  explored.push(startNode);
   visitedNodesInOrder.push(startNode);
   let st = [];
   st.push(startNode);
@@ -9,17 +11,24 @@ export function dfs(grid, startNode, finishNode) {
     //console.log("while")
     //console.log(st.pop());
     let curr = st.pop();
+    visitedNodesInOrder.push(curr);
+    explored.push(curr);
     curr.isVisited = true;
-    if (node === finishNode)
+    if (curr === finishNode)
         return visitedNodesInOrder;
     visitedNodesInOrder.push(curr);
     let unvisitedNeighbours = getUnvisitedNeighbors(curr, grid);
-    for (let i = 0; i < unvisitedNeighbours.length; i++) {
+    /*for (let i = 0; i < unvisitedNeighbours.length; i++) {
       const node = unvisitedNeighbours[i];
       node.isVisited = true;
       //visitedNodesInOrder.push(curr);
       st.push(node);
-    }
+    }*/
+      unvisitedNeighbours.forEach(n => {
+        if (!explored.includes(n)) {
+        st.push(n)
+      }
+    })
   }
   return visitedNodesInOrder;
 }
