@@ -1,54 +1,57 @@
 export function dfs(grid, startNode, finishNode) {
   const visitedNodesInOrder = [];
-  const unvisitedNodes = getAllNodes(grid);
-  startNode.isVisited = true;
-  let explored = [];
-  explored.push(startNode);
-  visitedNodesInOrder.push(startNode);
-  let st = [];
+  const st = [];
   st.push(startNode);
   while (st.length) {
-    //console.log("while")
-    //console.log(st.pop());
-    let curr = st.pop();
-    visitedNodesInOrder.push(curr);
-    explored.push(curr);
-    curr.isVisited = true;
-    if (curr === finishNode)
-        return visitedNodesInOrder;
-    visitedNodesInOrder.push(curr);
-    let unvisitedNeighbours = getUnvisitedNeighbors(curr, grid);
-    /*for (let i = 0; i < unvisitedNeighbours.length; i++) {
-      const node = unvisitedNeighbours[i];
-      node.isVisited = true;
-      //visitedNodesInOrder.push(curr);
-      st.push(node);
-    }*/
-      unvisitedNeighbours.forEach(n => {
-        if (!explored.includes(n)) {
-        st.push(n)
-      }
-    })
-  }
-  return visitedNodesInOrder;
-}
-
-function getAllNodes(grid) {
-  const nodes = [];
-  for (const row of grid) {
-    for (const node of row) {
-      nodes.push(node);
+    const currNode = st.pop();
+    if (currNode === finishNode)
+      return visitedNodesInOrder;
+    if ((currNode.isStart || !currNode.isVisited) && !currNode.isWall) {
+      currNode.isVisited = true;
+      visitedNodesInOrder.push(currNode);
+      const { row, col } = currNode;
+      const next = getNextNode(grid, row, col, st, currNode);
     }
   }
-  return nodes;
 }
 
-function getUnvisitedNeighbors(node, grid) {
-  const neighbors = [];
-  const {col, row} = node;
-  if (row > 0) neighbors.push(grid[row - 1][col]);
-  if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
-  if (col > 0) neighbors.push(grid[row][col - 1]);
-  if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
-  return neighbors.filter(neighbor => !neighbor.isVisited);
+function getNextNode(grid, row, col, st,currNode) {
+  if (row > 0) {
+    const next = grid[row - 1][col];
+    if (!next.isVisited) {
+      st.push(next);
+      next.previousNode = currNode;
+    }
+  }
+  if (row < grid.length - 1) {
+    const next = grid[row + 1][col];
+    if (!next.isVisited) {
+      st.push(next);
+      next.previousNode = currNode;
+    }
+  }
+  if (col < grid[0].length - 1) {
+    const next = grid[row][col + 1];
+    if (!next.isVisited) {
+      st.push(next);
+      next.previousNode = currNode;
+    }
+  }
+  if (col > 0) {
+    const next = grid[row][col - 1];
+    if (!next.isVisited) {
+      st.push(next);
+      next.previousNode = currNode;
+    }
+  }
+}
+
+export function getNodesInShortestPathOrderDFS(finishNode) {
+  const nodesInShortestPath = [];
+  let currNode = finishNode;
+  while (currNode !== null) {
+    nodesInShortestPath.unshift(currNode);
+    currNode = currNode.previousNode;
+  }
+  return nodesInShortestPath;
 }

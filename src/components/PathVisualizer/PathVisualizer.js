@@ -4,6 +4,7 @@ import "./PathVisualizer.css";
 import Node from "../Node/Node";
 import { dijkstra,getNodesInShortestPathOrder, dfs, bfs, astar } from "../../algorithms";
 import { animateDijkstra, animateDFS, animateBFS } from "../../visualizers";
+import { getNodesInShortestPathOrderDFS } from "../../algorithms/dfs";
 
 // constants
 const START_NODE_ROW = 10;
@@ -55,29 +56,20 @@ class PathVisualizer extends Component {
         const {grid} = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-        //console.log("dfs was called:", dfs(grid, startNode, finishNode));
+        console.log(dfs(grid, startNode, finishNode));
         const visitedNodesInOrder = dfs(grid, startNode, finishNode);
-        animateDFS(visitedNodesInOrder);
+        const nodesInShortestPathOrder = getNodesInShortestPathOrderDFS(finishNode);
+        animateDFS(visitedNodesInOrder, nodesInShortestPathOrder);
     }
 
     // bfs
     visualizeBFS = () => {
-        const {grid} = this.state;
-        const startNode = grid[START_NODE_ROW][START_NODE_COL];
-        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-        const visitedNodesInOrder = bfs(grid, startNode, finishNode);
-        for (let i = 0; i < visitedNodesInOrder.length; i++) {
-            const node = visitedNodesInOrder[i];
-            document.getElementById(`node-${node.row}-${node.col}`).className = `node node-visited`;
-        }
+        console.log("bfs");
     }
 
     // astar
     visualizeAstar = () => {
-        const { grid } = this.state;
-        const startNode = grid[START_NODE_ROW][START_NODE_COL];
-        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-        const visitedNodesInOrder = astar();
+        console.log("a star");
     }
 
     render() { 
@@ -87,8 +79,8 @@ class PathVisualizer extends Component {
                 <Container>
                     <Button onClick={this.visualizeDijkstra}>visualize dijkstra</Button>
                     <Button onClick={this.visualizeDFS}>visualize DFS</Button>
-                    <Button onClick={this.visualizeBFS}>visualize BFS</Button>
-                    <Button onClick={this.visualizeAstar}>visualize A*</Button>
+                    {/*<Button onClick={this.visualizeBFS}>visualize BFS</Button>
+                    <Button onClick={this.visualizeAstar}>visualize A*</Button>*/}
                 </Container>
                 <div className="grid">
                     {grid.map((row, rowIdx) => {
