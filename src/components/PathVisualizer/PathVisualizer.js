@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { Button, Container } from "reactstrap";
 import "./PathVisualizer.css";
 import Node from "../Node/Node";
-import { dijkstra,getNodesInShortestPathOrder, dfs, bfs, astar } from "../../algorithms";
-import { animateDijkstra, animateDFS, animateBFS } from "../../visualizers";
-import { getNodesInShortestPathOrderDFS } from "../../algorithms/dfs";
+import { dijkstra, getNodesInShortestPathOrder, dfs } from "../../algorithms";
+import { animateDijkstra, animateDFS } from "../../visualizers";
 
 // constants
 const START_NODE_ROW = 10;
@@ -58,7 +57,7 @@ class PathVisualizer extends Component {
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         console.log(dfs(grid, startNode, finishNode));
         const visitedNodesInOrder = dfs(grid, startNode, finishNode);
-        const nodesInShortestPathOrder = getNodesInShortestPathOrderDFS(finishNode);
+        const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
         animateDFS(visitedNodesInOrder, nodesInShortestPathOrder);
     }
 
