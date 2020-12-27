@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Button, Container } from "reactstrap";
 import "./PathVisualizer.css";
 import Node from "../Node/Node";
-import { dijkstra, getNodesInShortestPathOrder, dfs } from "../../algorithms";
-import { animateDijkstra, animateDFS } from "../../visualizers";
+import { dijkstra, getNodesInShortestPathOrder, dfs, bfs, astar } from "../../algorithms";
+import { animateDijkstra, animateDFS, animateBFS, animateAStar } from "../../visualizers";
 
 // constants
 const START_NODE_ROW = 10;
@@ -46,6 +46,7 @@ class PathVisualizer extends Component {
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+        console.log(visitedNodesInOrder);
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
         animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
     }
@@ -55,7 +56,6 @@ class PathVisualizer extends Component {
         const {grid} = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-        console.log(dfs(grid, startNode, finishNode));
         const visitedNodesInOrder = dfs(grid, startNode, finishNode);
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
         animateDFS(visitedNodesInOrder, nodesInShortestPathOrder);
@@ -63,12 +63,25 @@ class PathVisualizer extends Component {
 
     // bfs
     visualizeBFS = () => {
-        console.log("bfs");
+        const { grid } = this.state;
+        const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const visitedNodesInOrder = bfs(grid, startNode, finishNode);
+        const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+        console.log(visitedNodesInOrder);
+        animateBFS(visitedNodesInOrder, nodesInShortestPathOrder);
     }
 
     // astar
     visualizeAstar = () => {
         console.log("a star");
+        const { grid } = this.state;
+        const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_ROW];
+        const visitedNodesInOrder = astar(grid, startNode, finishNode);
+        console.log(visitedNodesInOrder);
+        const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+        animateAStar(visitedNodesInOrder, nodesInShortestPathOrder);
     }
 
     render() { 
@@ -78,8 +91,8 @@ class PathVisualizer extends Component {
                 <Container>
                     <Button onClick={this.visualizeDijkstra}>visualize dijkstra</Button>
                     <Button onClick={this.visualizeDFS}>visualize DFS</Button>
-                    {/*<Button onClick={this.visualizeBFS}>visualize BFS</Button>
-                    <Button onClick={this.visualizeAstar}>visualize A*</Button>*/}
+                    <Button onClick={this.visualizeBFS}>visualize BFS</Button>
+                    <Button onClick={this.visualizeAstar}>visualize A*</Button>
                 </Container>
                 <div className="grid">
                     {grid.map((row, rowIdx) => {
@@ -135,7 +148,8 @@ const createNode = (row, col) => {
         isWall: false,
         distance: Infinity,
         isVisited: false,
-        previousNode: null
+        previousNode: null,
+        distanceToFinishNode: Math.abs(FINISH_NODE_ROW - row) + Math.abs(FINISH_NODE_COL - col)
     }
 }
 

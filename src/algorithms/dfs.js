@@ -4,9 +4,8 @@ export function dfs(grid, startNode, finishNode) {
   st.push(startNode);
   while (st.length) {
     const currNode = st.pop();
-    if (currNode === finishNode) {
+    if (currNode === finishNode) 
       return visitedNodesInOrder;
-    }
 
     if (!currNode.isWall && (currNode.isStart || !currNode.isVisited)) {
       currNode.isVisited = true;
@@ -27,13 +26,6 @@ export function dfs(grid, startNode, finishNode) {
           st.push(next);
         }
       }
-      if (col > 0) {
-        next = grid[row][col - 1];
-        if (!next.isVisited) {
-          next.previousNode = currNode;
-          st.push(next);
-        }
-      }
       if (col < grid[0].length - 1) {
         next = grid[row][col + 1];
         if (!next.isVisited) {
@@ -41,10 +33,13 @@ export function dfs(grid, startNode, finishNode) {
           st.push(next);
         }
       }
+      if (col > 0) {
+        next = grid[row][col - 1];
+        if (!next.isVisited) {
+          next.previousNode = currNode;
+          st.push(next);
+        }
+      }
     }
   }
-}
-
-function getNextNode() {
-  
 }

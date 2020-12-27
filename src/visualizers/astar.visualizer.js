@@ -1,4 +1,4 @@
-export function animateBFS(visitedNodesInOrder, nodesInShortestPath) {
+export function animateAStar(visitedNodesInOrder, nodesInShortestPath) {
   for (let i = 0; i <= visitedNodesInOrder.length; i++) {
     if (i === visitedNodesInOrder.length) {
       setTimeout(() => {
