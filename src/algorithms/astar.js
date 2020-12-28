@@ -1,21 +1,22 @@
 export function astar(grid, startNode, finishNode) {
-    const visitedNodesInOrder = [];
-    startNode.distance = 0;
-    const unvisitedNodes = getAllNodes(grid);
-    
-    while (unvisitedNodes.length) {
-        sortNodesByDistance(unvisitedNodes);
-        const closestNode = unvisitedNodes.shift();
-        if (!closestNode.isWall) {
-            if (closestNode.distance === Infinity)
-                return visitedNodesInOrder;
-            closestNode.isVisited = true;
-            visitedNodesInOrder.push(closestNode);
-            if (closestNode === finishNode)
-                return visitedNodesInOrder;
-            updateUnvisitedNeighbors(closestNode, grid);
-        }
+  const visitedNodesInOrder = [];
+  startNode.distance = 0;
+  const unvisitedNodes = getAllNodes(grid); // Q: different from using grid or slice of grid???
+
+  while (unvisitedNodes.length) {
+    sortNodesByDistance(unvisitedNodes);
+    const closestNode = unvisitedNodes.shift();
+    // If we encounter a wall, we skip it.
+    if (!closestNode.isWall) {
+      // If the closest node is at a distance of infinity,
+      // we must be trapped and should stop.
+      if (closestNode.distance === Infinity) return visitedNodesInOrder;
+      closestNode.isVisited = true;
+      visitedNodesInOrder.push(closestNode);
+      if (closestNode === finishNode) return visitedNodesInOrder;
+      updateUnvisitedNeighbors(closestNode, grid);
     }
+  }
 }
 
 function getAllNodes(grid) {

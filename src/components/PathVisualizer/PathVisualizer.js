@@ -77,7 +77,7 @@ class PathVisualizer extends Component {
         console.log("a star");
         const { grid } = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
-        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_ROW];
+        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         const visitedNodesInOrder = astar(grid, startNode, finishNode);
         console.log(visitedNodesInOrder);
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
