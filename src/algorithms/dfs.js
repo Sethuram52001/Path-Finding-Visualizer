@@ -11,6 +11,12 @@ export function dfs(grid, startNode, finishNode) {
       currNode.isVisited = true;
       visitedNodesInOrder.push(currNode);
       const { row, col } = currNode;
+      updateUnvisitedNeighbours(row, col, st, grid,currNode);
+    }
+  }
+}
+
+function  updateUnvisitedNeighbours(row, col, st, grid,currNode) {
       let next;
       if (row > 0) {
         next = grid[row - 1][col];
@@ -40,6 +46,4 @@ export function dfs(grid, startNode, finishNode) {
           st.push(next);
         }
       }
-    }
-  }
 }

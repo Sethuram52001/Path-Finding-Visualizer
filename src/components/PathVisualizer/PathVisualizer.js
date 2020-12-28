@@ -17,6 +17,7 @@ class PathVisualizer extends Component {
         mouseIsPressed: false
     }
     
+    // creates the grid when the component is mounted
     componentDidMount() { 
         let grid = getInitialGrid();
         this.setState({ grid });
@@ -40,13 +41,13 @@ class PathVisualizer extends Component {
         //console.log("mouse up is called")
     }
 
+/*----------------------------------------------------------algorithm helper functions---------------------------------------------------------*/
     // dijkstra
     visualizeDijkstra = () => {
         const {grid} = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
-        console.log(visitedNodesInOrder);
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
         animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
     }
@@ -68,7 +69,6 @@ class PathVisualizer extends Component {
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         const visitedNodesInOrder = bfs(grid, startNode, finishNode);
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-        console.log(visitedNodesInOrder);
         animateBFS(visitedNodesInOrder, nodesInShortestPathOrder);
     }
 
@@ -79,7 +79,6 @@ class PathVisualizer extends Component {
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         const visitedNodesInOrder = astar(grid, startNode, finishNode);
-        console.log(visitedNodesInOrder);
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
         animateAStar(visitedNodesInOrder, nodesInShortestPathOrder);
     }
@@ -126,7 +125,10 @@ class PathVisualizer extends Component {
  
 export default PathVisualizer;
 
-// helper functions
+/*------------------------------------------------------------helper functions----------------------------------------------------------------*/
+
+// creating the initial grid, calls the createNode() function
+// to initialise the node with initial properties
 const getInitialGrid = () => {
     let grid = [];
     for (let row = 0; row < 20; row++) {
@@ -139,6 +141,7 @@ const getInitialGrid = () => {
     return grid;
 }
 
+// initialising the node with its initial properties
 const createNode = (row, col) => {
     return {
         row,
@@ -153,6 +156,7 @@ const createNode = (row, col) => {
     }
 }
 
+// updating the grid, when the walls are tiggered
 const gridWithWallToggled = (grid, row, col) => {
     let newGrid = grid.slice();
     const node = newGrid[row][col];
