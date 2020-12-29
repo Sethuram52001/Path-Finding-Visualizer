@@ -4,6 +4,7 @@ import "./PathVisualizer.css";
 import Node from "../Node/Node";
 import { dijkstra, getNodesInShortestPathOrder, dfs, bfs, astar } from "../../algorithms";
 import { animateDijkstra, animateDFS, animateBFS, animateAStar } from "../../visualizers";
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 // constants
 const START_NODE_ROW = 10;
@@ -14,13 +15,18 @@ const FINISH_NODE_COL = 35;
 class PathVisualizer extends Component {
     state = {
         grid: [],
-        mouseIsPressed: false
+        mouseIsPressed: false,
+        dropdownOpen: false,
     }
     
     // creates the grid when the component is mounted
     componentDidMount() { 
         let grid = getInitialGrid();
         this.setState({ grid });
+    }
+
+    toggle = () => {
+        this.setState({ dropdownOpen: !this.state.dropdownOpen });
     }
 
     // handling mouse events to set up walls
@@ -88,10 +94,29 @@ class PathVisualizer extends Component {
         return ( 
             <>
                 <Container>
-                    <Button onClick={this.visualizeDijkstra}>visualize dijkstra</Button>
-                    <Button onClick={this.visualizeDFS}>visualize DFS</Button>
-                    <Button onClick={this.visualizeBFS}>visualize BFS</Button>
-                    <Button onClick={this.visualizeAstar}>visualize A*</Button>
+                    <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                    <DropdownToggle caret>
+                        Algorithms
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        <DropdownItem header>Pick the algorithm to visualize</DropdownItem>
+                        <DropdownItem>
+                            <Button onClick={this.visualizeDijkstra}>visualize dijkstra</Button>
+                        </DropdownItem>
+                        <DropdownItem divider />
+                        <DropdownItem>
+                            <Button onClick={this.visualizeDFS}>visualize DFS</Button>  
+                        </DropdownItem>
+                        <DropdownItem divider />
+                        <DropdownItem>
+                            <Button onClick={this.visualizeBFS}>visualize BFS</Button>    
+                        </DropdownItem>
+                        <DropdownItem divider />
+                        <DropdownItem>
+                            <Button onClick={this.visualizeAstar}>visualize A*</Button>   
+                        </DropdownItem>                           
+                    </DropdownMenu>
+                    </ButtonDropdown>
                 </Container>
                 <div className="grid">
                     {grid.map((row, rowIdx) => {
@@ -133,7 +158,7 @@ const getInitialGrid = () => {
     let grid = [];
     for (let row = 0; row < 20; row++) {
         const currRow = [];
-        for (let col = 0; col < 50; col++) {
+        for (let col = 0; col < 40; col++) { //  previously I had it as 20*50
             currRow.push(createNode(row, col));
         }
         grid.push(currRow);
