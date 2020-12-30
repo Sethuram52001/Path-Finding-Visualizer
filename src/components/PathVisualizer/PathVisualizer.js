@@ -89,6 +89,31 @@ class PathVisualizer extends Component {
         animateAStar(visitedNodesInOrder, nodesInShortestPathOrder);
     }
 
+/*----------------------------------------------------------clear helper functions---------------------------------------------------------*/
+    clearGrid = () => {
+        for (let row = 0; row < this.state.grid.length; row++) {
+            for (let col = 0; col < this.state.grid.length; col++) {
+                if (!((row === START_NODE_ROW && col === START_NODE_COL) || (row === FINISH_NODE_ROW && col === FINISH_NODE_COL))) {
+                    document.getElementById(`node-${row}-${col}`).className = "node";
+                }
+            }
+        }
+        const newGrid = getInitialGrid();
+        this.setState({ grid: newGrid });
+    }
+
+    clearPath = () => {
+        for (let row = 0; row < this.state.grid.length; row++) {
+            for (let col = 0; col < this.state.grid[0].length; col++) {
+                if (document.getElementById(`node-${row}-${col}`).className === "node node-shortest-path") {
+                    document.getElementById(`node-${row}-${col}`).className = "node";
+                }
+            }
+        }
+        const newGrid = getGridWithoutPath(this.state.grid);
+        this.setState({ grid: newGrid });
+    }
+
     render() { 
         const { grid, mouseIsPressed } = this.state;
         return ( 
@@ -117,6 +142,8 @@ class PathVisualizer extends Component {
                         </DropdownItem>                           
                     </DropdownMenu>
                     </ButtonDropdown>
+                    <Button onClick={this.clearGrid}>Clear Grid</Button>
+                    <Button onClick={this.clearPath}>Clear Paths</Button>
                 </Container>
                 <div className="grid">
                     {grid.map((row, rowIdx) => {
@@ -191,4 +218,20 @@ const gridWithWallToggled = (grid, row, col) => {
     }
     newGrid[row][col] = newNode;
     return newGrid;
+}
+
+const getGridWithoutPath = (grid) => {
+    let newGrid = grid.slice();
+    for (let row of grid) {
+        for (let col of row) {
+            let node = newGrid[row][col];
+            let newNode = {
+                ...node,
+                distance: Infinity,
+                isVisited: false,
+                distanceToFinishNode: Math.abs(FINISH_NODE_ROW - row) + Math.abs(FINISH_NODE_COL - col),
+            }
+            newGrid[node.row][node.col] = newNode;
+        }
+    }
 }
