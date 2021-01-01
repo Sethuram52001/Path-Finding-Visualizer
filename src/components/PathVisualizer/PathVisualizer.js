@@ -55,7 +55,7 @@ class PathVisualizer extends Component {
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-        animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+        animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
     }
 
     // dfs
@@ -65,7 +65,7 @@ class PathVisualizer extends Component {
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         const visitedNodesInOrder = dfs(grid, startNode, finishNode);
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-        animateDFS(visitedNodesInOrder, nodesInShortestPathOrder);
+        animateDFS(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
     }
 
     // bfs
@@ -75,7 +75,7 @@ class PathVisualizer extends Component {
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         const visitedNodesInOrder = bfs(grid, startNode, finishNode);
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-        animateBFS(visitedNodesInOrder, nodesInShortestPathOrder);
+        animateBFS(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
     }
 
     // astar
@@ -86,7 +86,7 @@ class PathVisualizer extends Component {
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         const visitedNodesInOrder = astar(grid, startNode, finishNode);
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-        animateAStar(visitedNodesInOrder, nodesInShortestPathOrder);
+        animateAStar(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
     }
 
 /*----------------------------------------------------------clear helper functions---------------------------------------------------------*/
@@ -98,8 +98,8 @@ class PathVisualizer extends Component {
                 }
             }
         }
-        //const newGrid = getInitialGrid();
-        //this.setState({ grid: newGrid });
+        const newGrid = getInitialGrid();
+        this.setState({ grid: newGrid });
     }
 
     clearPath = () => {
@@ -110,8 +110,8 @@ class PathVisualizer extends Component {
                 }
             } 
         }
-        //const newGrid = getInitialGrid();
-        //this.setState({ grid: newGrid });
+        const newGrid = getInitialGrid();
+        this.setState({ grid: newGrid });
     }
 
     /*

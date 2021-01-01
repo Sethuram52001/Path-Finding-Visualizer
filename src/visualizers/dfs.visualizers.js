@@ -1,4 +1,4 @@
-export function animateDFS(visitedNodesInOrder, nodesInShortestPath) {
+export function animateDFS(visitedNodesInOrder, nodesInShortestPath, startNode, finishNode) {
   for (let i = 0; i <= visitedNodesInOrder.length; i++) {
     if (i === visitedNodesInOrder.length) {
       setTimeout(() => {
@@ -8,13 +8,14 @@ export function animateDFS(visitedNodesInOrder, nodesInShortestPath) {
     }
     setTimeout(() => {
       const node = visitedNodesInOrder[i];
-      document.getElementById(`node-${node.row}-${node.col}`).className = `node node-visited`;
+      if ((node !== startNode) && (node !== finishNode))
+        document.getElementById(`node-${node.row}-${node.col}`).className = `node node-visited`;
     }, 10 * i);
   }
 }
 
 function animateShortestPath(nodesInShortestPath) {
-  for (let i = 0; i < nodesInShortestPath.length; i++) {
+  for (let i = 1; i < nodesInShortestPath.length-1; i++) {
     setTimeout(() => {
       const node = nodesInShortestPath[i];
       document.getElementById(`node-${node.row}-${node.col}`).className = `node node-shortest-path`;

@@ -7,15 +7,15 @@
 }
 
 .node-start {
-    /*background-color: green;*/
-    background: url("../../images/x-wing.png");
-    background-size: cover;
+    background-color: green;
+    /*background: url("../../images/x-wing.png");
+    background-size: cover;*/
 }
 
 .node-finish {
-    /*background-color: red;*/
-    background: url("../../images/death-star.png");
-    background-size: cover;
+    background-color: red;
+    /*background: url("../../images/death-star.png");
+    background-size: cover;*/
 }
 
 .node-wall {
