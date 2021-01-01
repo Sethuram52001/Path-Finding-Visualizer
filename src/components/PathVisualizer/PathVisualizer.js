@@ -92,17 +92,29 @@ class PathVisualizer extends Component {
 /*----------------------------------------------------------clear helper functions---------------------------------------------------------*/
     clearGrid = () => {
         for (let row = 0; row < this.state.grid.length; row++) {
-            for (let col = 0; col < this.state.grid.length; col++) {
+            for (let col = 0; col < this.state.grid[0].length; col++) {
                 if (!((row === START_NODE_ROW && col === START_NODE_COL) || (row === FINISH_NODE_ROW && col === FINISH_NODE_COL))) {
                     document.getElementById(`node-${row}-${col}`).className = "node";
                 }
             }
         }
-        const newGrid = getInitialGrid();
-        this.setState({ grid: newGrid });
+        //const newGrid = getInitialGrid();
+        //this.setState({ grid: newGrid });
     }
 
     clearPath = () => {
+        for (let row = 0; row < this.state.grid.length; row++) {
+            for (let col = 0; col < this.state.grid[0].length; col++) {
+                if ((document.getElementById(`node-${row}-${col}`).className === "node node-shortest-path") || document.getElementById(`node-${row}-${col}`).className === "node node-visited") {
+                    document.getElementById(`node-${row}-${col}`).className = "node";
+                }
+            } 
+        }
+        //const newGrid = getInitialGrid();
+        //this.setState({ grid: newGrid });
+    }
+
+    /*
         for (let row = 0; row < this.state.grid.length; row++) {
             for (let col = 0; col < this.state.grid[0].length; col++) {
                 if (document.getElementById(`node-${row}-${col}`).className === "node node-shortest-path") {
@@ -112,7 +124,7 @@ class PathVisualizer extends Component {
         }
         const newGrid = getGridWithoutPath(this.state.grid);
         this.setState({ grid: newGrid });
-    }
+    */
 
     render() { 
         const { grid, mouseIsPressed } = this.state;
@@ -220,7 +232,7 @@ const gridWithWallToggled = (grid, row, col) => {
     return newGrid;
 }
 
-const getGridWithoutPath = (grid) => {
+/*const getGridWithoutPath = (grid) => {
     let newGrid = grid.slice();
     for (let row of grid) {
         for (let col of row) {
@@ -234,4 +246,4 @@ const getGridWithoutPath = (grid) => {
             newGrid[node.row][node.col] = newNode;
         }
     }
-}
+}*/
