@@ -4,8 +4,8 @@ import "./PathVisualizer.css";
 import Node from "../Node/Node";
 import { dijkstra, getNodesInShortestPathOrder, dfs, bfs, astar } from "../../algorithms";
 import { animateDijkstra, animateDFS, animateBFS, animateAStar } from "../../visualizers";
-import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import AppNavbar from "../AppNavbar";
+import ErrorModal from '../ErrorModal';
 
 // constants
 const START_NODE_ROW = 10;
@@ -64,9 +64,14 @@ class PathVisualizer extends Component {
         const {grid} = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-        const visitedNodesInOrder = dfs(grid, startNode, finishNode);
-        const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-        animateDFS(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
+        try {
+            const visitedNodesInOrder = dfs(grid, startNode, finishNode);
+            const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+            animateDFS(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);   
+        } catch (error) {
+            //console.log("path not found")
+            return <ErrorModal error={true} />;
+        }
     }
 
     // bfs
@@ -124,6 +129,7 @@ class PathVisualizer extends Component {
         const { grid, mouseIsPressed } = this.state;
         return ( 
             <>
+                <ErrorModal buttonLabel="something" />
                 <AppNavbar
                     handleDijkstra={this.visualizeDijkstra}
                     handleDFS={this.visualizeDFS}
