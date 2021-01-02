@@ -5,6 +5,7 @@ import Node from "../Node/Node";
 import { dijkstra, getNodesInShortestPathOrder, dfs, bfs, astar } from "../../algorithms";
 import { animateDijkstra, animateDFS, animateBFS, animateAStar } from "../../visualizers";
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import AppNavbar from "../AppNavbar";
 
 // constants
 const START_NODE_ROW = 10;
@@ -114,49 +115,23 @@ class PathVisualizer extends Component {
         this.setState({ grid: newGrid });
     }
 
-    /*
-        for (let row = 0; row < this.state.grid.length; row++) {
-            for (let col = 0; col < this.state.grid[0].length; col++) {
-                if (document.getElementById(`node-${row}-${col}`).className === "node node-shortest-path") {
-                    document.getElementById(`node-${row}-${col}`).className = "node";
-                }
-            }
-        }
-        const newGrid = getGridWithoutPath(this.state.grid);
-        this.setState({ grid: newGrid });
-    */
+    // dummy func
+    onHandleClick = () => {
+        console.log("onHandleClick was called");
+    }
 
     render() { 
         const { grid, mouseIsPressed } = this.state;
         return ( 
             <>
-                <Container>
-                    <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-                    <DropdownToggle caret>
-                        Algorithms
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <DropdownItem header>Pick the algorithm to visualize</DropdownItem>
-                        <DropdownItem>
-                            <Button onClick={this.visualizeDijkstra}>visualize dijkstra</Button>
-                        </DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem>
-                            <Button onClick={this.visualizeDFS}>visualize DFS</Button>  
-                        </DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem>
-                            <Button onClick={this.visualizeBFS}>visualize BFS</Button>    
-                        </DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem>
-                            <Button onClick={this.visualizeAstar}>visualize A*</Button>   
-                        </DropdownItem>                           
-                    </DropdownMenu>
-                    </ButtonDropdown>
-                    <Button onClick={this.clearGrid}>Clear Grid</Button>
-                    <Button onClick={this.clearPath}>Clear Paths</Button>
-                </Container>
+                <AppNavbar
+                    handleDijkstra={this.visualizeDijkstra}
+                    handleDFS={this.visualizeDFS}
+                    handleBFS={this.visualizeBFS}
+                    handleAstar={this.visualizeAstar}
+                    handleClearPath={this.clearPath}
+                    handleClearGrid={this.clearGrid}
+                />
                 <div className="grid">
                     {grid.map((row, rowIdx) => {
                         return (
@@ -247,3 +222,33 @@ const gridWithWallToggled = (grid, row, col) => {
         }
     }
 }*/
+
+/*
+                <Container>
+                    <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                    <DropdownToggle caret>
+                        Algorithms
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        <DropdownItem header>Pick the algorithm to visualize</DropdownItem>
+                        <DropdownItem>
+                            <Button onClick={this.visualizeDijkstra}>visualize dijkstra</Button>
+                        </DropdownItem>
+                        <DropdownItem divider />
+                        <DropdownItem>
+                            <Button onClick={this.visualizeDFS}>visualize DFS</Button>  
+                        </DropdownItem>
+                        <DropdownItem divider />
+                        <DropdownItem>
+                            <Button onClick={this.visualizeBFS}>visualize BFS</Button>    
+                        </DropdownItem>
+                        <DropdownItem divider />
+                        <DropdownItem>
+                            <Button onClick={this.visualizeAstar}>visualize A*</Button>   
+                        </DropdownItem>                           
+                    </DropdownMenu>
+                    </ButtonDropdown>
+                    <Button onClick={this.clearGrid}>Clear Grid</Button>
+                    <Button onClick={this.clearPath}>Clear Paths</Button>
+                </Container>
+*/
