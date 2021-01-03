@@ -116,7 +116,7 @@ class PathVisualizer extends Component {
                 }
             } 
         }
-        const newGrid = getInitialGrid();
+        const newGrid = getGridWithoutPath(this.state.grid);
         this.setState({ grid: newGrid });
     }
 
@@ -213,22 +213,23 @@ const gridWithWallToggled = (grid, row, col) => {
     return newGrid;
 }
 
-/*const getGridWithoutPath = (grid) => {
+// updating the grid, resetting the features except for the walls
+const getGridWithoutPath = (grid) => {
     let newGrid = grid.slice();
     for (let row of grid) {
-        for (let col of row) {
-            let node = newGrid[row][col];
+        for (let node of row) {
             let newNode = {
                 ...node,
                 distance: Infinity,
                 isVisited: false,
-                distanceToFinishNode: Math.abs(FINISH_NODE_ROW - row) + Math.abs(FINISH_NODE_COL - col),
-            }
+                previousNode: null,
+                distanceToFinishNode: Math.abs(FINISH_NODE_ROW - node.row) + Math.abs(FINISH_NODE_COL - node.col)
+            };
             newGrid[node.row][node.col] = newNode;
         }
     }
-}*/
-
+    return newGrid;
+}
 /*
                 <Container>
                     <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
