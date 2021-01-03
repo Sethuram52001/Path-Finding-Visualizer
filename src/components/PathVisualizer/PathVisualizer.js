@@ -55,9 +55,17 @@ class PathVisualizer extends Component {
         const {grid} = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-        const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
-        const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-        animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
+        try {
+            const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+            const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+            animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
+        } catch (error) {
+            console.log("path not found")
+            this.setState({ isPathNotFound: true });
+            setTimeout(() => {
+                this.setState({ isPathNotFound: false });
+            }, 3000);
+        }
     }
 
     // dfs
@@ -70,7 +78,11 @@ class PathVisualizer extends Component {
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
             animateDFS(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);   
         } catch (error) {
-            console.log("path not found");
+            console.log("path not found")
+            this.setState({ isPathNotFound: true });
+            setTimeout(() => {
+                this.setState({ isPathNotFound: false });
+            }, 3000);
         }
     }
 
@@ -86,6 +98,9 @@ class PathVisualizer extends Component {
         } catch (error) {
             console.log("path not found")
             this.setState({ isPathNotFound: true });
+            setTimeout(() => {
+                this.setState({ isPathNotFound: false });
+            }, 3000);
         }
     }
 
@@ -95,9 +110,17 @@ class PathVisualizer extends Component {
         const { grid } = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-        const visitedNodesInOrder = astar(grid, startNode, finishNode);
-        const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-        animateAStar(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
+        try {
+            const visitedNodesInOrder = astar(grid, startNode, finishNode);
+            const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+            animateAStar(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
+        } catch (error) {
+            console.log("path not found")
+            this.setState({ isPathNotFound: true });
+            setTimeout(() => {
+                this.setState({ isPathNotFound: false });
+            }, 3000);
+        }
     }
 
 /*----------------------------------------------------------clear helper functions---------------------------------------------------------*/
