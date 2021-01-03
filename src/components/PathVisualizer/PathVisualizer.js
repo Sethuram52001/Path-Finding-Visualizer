@@ -11,13 +11,14 @@ import ErrorModal from '../ErrorModal';
 const START_NODE_ROW = 10;
 const START_NODE_COL = 15;
 const FINISH_NODE_ROW = 10;
-const FINISH_NODE_COL = 35;
+const FINISH_NODE_COL = 35; 
 
 class PathVisualizer extends Component {
     state = {
         grid: [],
         mouseIsPressed: false,
         dropdownOpen: false,
+        isPathNotFound: false
     }
     
     // creates the grid when the component is mounted
@@ -69,19 +70,23 @@ class PathVisualizer extends Component {
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
             animateDFS(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);   
         } catch (error) {
-            //console.log("path not found")
-            return <ErrorModal error={true} />;
+            console.log("path not found");
         }
     }
 
     // bfs
-    visualizeBFS = () => {
+    visualizeBFS = async() => {
         const { grid } = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-        const visitedNodesInOrder = bfs(grid, startNode, finishNode);
-        const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-        animateBFS(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
+        try {
+            const visitedNodesInOrder = bfs(grid, startNode, finishNode);
+            const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+            animateBFS(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);    
+        } catch (error) {
+            console.log("path not found")
+            this.setState({ isPathNotFound: true });
+        }
     }
 
     // astar
@@ -120,16 +125,11 @@ class PathVisualizer extends Component {
         this.setState({ grid: newGrid });
     }
 
-    // dummy func
-    onHandleClick = () => {
-        console.log("onHandleClick was called");
-    }
-
     render() { 
         const { grid, mouseIsPressed } = this.state;
         return ( 
             <>
-                <ErrorModal buttonLabel="something" />
+                {this.state.isPathNotFound ? <ErrorModal /> : null }
                 <AppNavbar
                     handleDijkstra={this.visualizeDijkstra}
                     handleDFS={this.visualizeDFS}
