@@ -25,9 +25,6 @@
     background-size: cover;*/
 }
 
-/*.node-visited {
-    background-color: aqua;
-}*/
 .node-visited {
   animation-name: visitedAnimation;
   animation-duration: 1.5s;

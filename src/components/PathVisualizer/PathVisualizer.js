@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Button, Container } from "reactstrap";
 import "./PathVisualizer.css";
 import Node from "../Node/Node";
 import { dijkstra, getNodesInShortestPathOrder, dfs, bfs, astar } from "../../algorithms";
 import { animateDijkstra, animateDFS, animateBFS, animateAStar } from "../../visualizers";
+import { recursiveDivisionMaze } from "../../maze-algorithms/recursiveDivision";
 import AppNavbar from "../AppNavbar";
 import ErrorModal from '../ErrorModal';
 
@@ -148,6 +148,21 @@ class PathVisualizer extends Component {
         this.setState({ grid: newGrid });
     }
 
+    generateRecursiveDivisionMaze = () => {
+        const { grid } = this.state;
+        const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const walls = recursiveDivisionMaze(grid, startNode, finishNode);
+        console.log(walls);
+        const newGrid = getNewGridWithMaze(this.state.grid, walls);
+        this.setState({ grid: newGrid });
+        for (let i = 0; i < walls.length; i++) {
+            let wall = walls[i];
+            let node = this.state.grid[wall[0]][wall[1]];
+            document.getElementById(`node-${node.row}-${node.col}`).className = "node node-wall"
+        }
+    }
+    
     render() { 
         const { grid, mouseIsPressed } = this.state;
         return ( 
@@ -160,6 +175,7 @@ class PathVisualizer extends Component {
                     handleAstar={this.visualizeAstar}
                     handleClearPath={this.clearPath}
                     handleClearGrid={this.clearGrid}
+                    handleMaze={this.generateRecursiveDivisionMaze}
                 />
                 <div className="grid">
                     {grid.map((row, rowIdx) => {
@@ -253,6 +269,19 @@ const getGridWithoutPath = (grid) => {
     }
     return newGrid;
 }
+
+const getNewGridWithMaze = (grid, walls) => {
+  let newGrid = grid.slice();
+  for (let wall of walls) {
+    let node = grid[wall[0]][wall[1]];
+    let newNode = {
+      ...node,
+      isWall: true,
+    };
+    newGrid[wall[0]][wall[1]] = newNode;
+  }
+  return newGrid;
+};
 /*
                 <Container>
                     <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>

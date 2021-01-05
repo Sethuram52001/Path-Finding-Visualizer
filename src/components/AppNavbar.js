@@ -50,6 +50,17 @@ const AppNavbar = (props) => {
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
+            <UncontrolledDropdown nav inNavbar>
+              <DropdownToggle nav caret>
+                Generate Maze
+              </DropdownToggle>
+              <DropdownMenu right>
+                <DropdownItem>
+                    <Button onClick={props.handleMaze}>Recursive Division</Button>
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+
           </Nav>
             <NavbarText>
                 <ButtonGroup>
