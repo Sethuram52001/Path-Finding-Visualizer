@@ -13,7 +13,8 @@ import {
   DropdownItem,
   NavbarText,
   Button,
-  ButtonGroup
+  ButtonGroup,
+  Progress
 } from 'reactstrap';
 
 const AppNavbar = (props) => {
@@ -58,9 +59,11 @@ const AppNavbar = (props) => {
                 <DropdownItem>
                     <Button onClick={props.handleMaze}>Recursive Division</Button>
                 </DropdownItem>
+                <DropdownItem>
+                    <Button onClick={props.handleRandomMaze}>Random Maze</Button>
+                </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
-
           </Nav>
             <NavbarText>
                 <ButtonGroup>
