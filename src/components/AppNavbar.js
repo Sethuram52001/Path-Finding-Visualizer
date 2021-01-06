@@ -67,8 +67,8 @@ const AppNavbar = (props) => {
           </Nav>
             <NavbarText>
                 <ButtonGroup>
-                    <Button onClick={props.handleClearPath}>Clear Path</Button>
-                    <Button onClick={props.handleClearGrid}>Clear Grid</Button>
+                    <Button id={"Tooltip-" + 0} onClick={props.handleClearPath}>Clear Path</Button>
+                    <Button id={"Tooltip-" + 1} onClick={props.handleClearGrid}>Clear Grid</Button>
                 </ButtonGroup>          
             </NavbarText>     
         </Collapse>
@@ -78,3 +78,9 @@ const AppNavbar = (props) => {
 }
 
 export default AppNavbar;
+
+/*
+      <Button className="mr-1" color="secondary" id={"Tooltip-" + id}>
+        {item.text}
+      </Button>
+*/

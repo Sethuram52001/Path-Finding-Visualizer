@@ -6,8 +6,9 @@ import { animateDijkstra, animateDFS, animateBFS, animateAStar } from "../../vis
 import { recursiveDivisionMaze, randomMaze } from "../../maze-algorithms";
 import AppNavbar from "../AppNavbar";
 import ErrorModal from '../ErrorModal';
-import { Progress } from "reactstrap";
+import { Progress, Tooltip } from "reactstrap";
 import Footer from "../Footer";
+import TooltipExampleMulti from '../ToolTip';
 
 // constants
 const START_NODE_ROW = 10;
@@ -19,10 +20,10 @@ class PathVisualizer extends Component {
     state = {
         grid: [],
         mouseIsPressed: false,
-        dropdownOpen: false,
         isPathNotFound: false,
         totalNodes: 100,
-        shortestNodes: 0
+        shortestNodes: 0,
+        tooltipOpen: false
     }
     
     // creates the grid when the component is mounted
@@ -32,7 +33,7 @@ class PathVisualizer extends Component {
     }
 
     toggle = () => {
-        this.setState({ dropdownOpen: !this.state.dropdownOpen });
+        this.setState({ tooltipOpen: !this.state.tooltipOpen });
     }
 
     // handling mouse events to set up walls
@@ -203,6 +204,7 @@ class PathVisualizer extends Component {
         const { grid, mouseIsPressed } = this.state;
         return ( 
             <>
+                <TooltipExampleMulti />
                 {this.state.isPathNotFound ? <ErrorModal /> : null }
                 <AppNavbar
                     handleDijkstra={this.visualizeDijkstra}
