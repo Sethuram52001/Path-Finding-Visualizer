@@ -38,7 +38,7 @@ const AppNavbar = (props) => {
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem>
-                    <Button onClick={props.handleDijkstra}>Dijkstra</Button>
+                  <Button onClick={() => { props.handleDijkstra(); props.handleVisualization() }}>Dijkstra</Button>
                 </DropdownItem>
                 <DropdownItem>
                     <Button onClick={props.handleDFS}>DFS</Button>              

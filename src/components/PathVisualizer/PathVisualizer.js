@@ -23,7 +23,8 @@ class PathVisualizer extends Component {
         isPathNotFound: false,
         totalNodes: 100,
         shortestNodes: 0,
-        tooltipOpen: false
+        tooltipOpen: false,
+        isVisualizing: false
     }
     
     // creates the grid when the component is mounted
@@ -57,6 +58,8 @@ class PathVisualizer extends Component {
 /*----------------------------------------------------------algorithm helper functions---------------------------------------------------------*/
     // dijkstra
     visualizeDijkstra = () => {
+        if (this.state.isVisualizing)
+            return;
         const {grid} = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
@@ -79,6 +82,8 @@ class PathVisualizer extends Component {
 
     // dfs
     visualizeDFS = () => {
+        if (this.state.isVisualizing)
+            return;
         const {grid} = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
@@ -100,7 +105,9 @@ class PathVisualizer extends Component {
     }
 
     // bfs
-    visualizeBFS = async() => {
+    visualizeBFS = async () => {
+        if (this.state.isVisualizing)
+            return;
         const { grid } = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
@@ -123,6 +130,8 @@ class PathVisualizer extends Component {
 
     // astar
     visualizeAstar = () => {
+        if (this.state.isVisualizing)
+            return;
         console.log("a star");
         const { grid } = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
@@ -199,9 +208,15 @@ class PathVisualizer extends Component {
             document.getElementById(`node-${node.row}-${node.col}`).className = "node node-wall"
         }
     }
+
+    setVisualization = () => {
+        this.setState({ 
+            isVisualizing: !this.state.isVisualizing
+        });
+    }
     
     render() { 
-        const { grid, mouseIsPressed } = this.state;
+        const { grid, mouseIsPressed, isVisualizing } = this.state;
         return ( 
             <>
                 <TooltipExampleMulti />
@@ -215,6 +230,7 @@ class PathVisualizer extends Component {
                     handleClearGrid={this.clearGrid}
                     handleMaze={this.generateRecursiveDivisionMaze}
                     handleRandomMaze={this.generateRandomMaze}
+                    handleVisualization={this.setVisualization}
                 />
                 <Progress multi>
                     <Progress bar animated value={(this.state.shortestNodes/this.state.totalNodes)*100}>{ ((this.state.shortestNodes/this.state.totalNodes)*100).toPrecision(4) }%</Progress>
