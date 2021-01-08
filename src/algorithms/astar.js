@@ -11,13 +11,17 @@ export function astar(grid, startNode, finishNode) {
   while (unvisitedNodes.length) {
     sortNodesByDistance(unvisitedNodes);
     const closestNode = unvisitedNodes.shift();
+    // If we encounter a wall, we skip it.
     if (!closestNode.isWall) {
       if (closestNode.distance === Infinity)
         return visitedNodesInOrder;
+      
       closestNode.isVisited = true;
       visitedNodesInOrder.push(closestNode);
+      // if the finsih node is reached then we return the visitedNodes array
       if (closestNode === finishNode)
         return visitedNodesInOrder;
+      
       updateUnvisitedNeighbours(closestNode, grid);
     }
   }
