@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import "./PathVisualizer.css";
 import Node from "../Node/Node";
 import { dijkstra, getNodesInShortestPathOrder, dfs, bfs, astar } from "../../algorithms";
-import { animateDijkstra, animateDFS, animateBFS, animateAStar } from "../../visualizers";
+import { animate } from "../../visualizers";
 import { recursiveDivisionMaze, randomMaze } from "../../maze-algorithms";
 import AppNavbar from "../AppNavbar";
 import ErrorModal from '../ErrorModal';
@@ -70,7 +70,7 @@ class PathVisualizer extends Component {
                 shortestNodes: nodesInShortestPathOrder.length,
                 totalNodes: visitedNodesInOrder.length
             });
-            animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
+            animate(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
         } catch (error) {
             console.log("path not found")
             this.setState({ isPathNotFound: true });
@@ -94,7 +94,7 @@ class PathVisualizer extends Component {
                 shortestNodes: nodesInShortestPathOrder.length,
                 totalNodes: visitedNodesInOrder.length
             });
-            animateDFS(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);   
+            animate(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);   
         } catch (error) {
             console.log("path not found")
             this.setState({ isPathNotFound: true });
@@ -118,7 +118,7 @@ class PathVisualizer extends Component {
                 shortestNodes: nodesInShortestPathOrder.length,
                 totalNodes: visitedNodesInOrder.length
             });
-            animateBFS(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);    
+            animate(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);    
         } catch (error) {
             console.log("path not found")
             this.setState({ isPathNotFound: true });
@@ -143,7 +143,7 @@ class PathVisualizer extends Component {
                 shortestNodes: nodesInShortestPathOrder.length,
                 totalNodes: visitedNodesInOrder.length
             });
-            animateAStar(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
+            animate(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
         } catch (error) {
             console.log("path not found")
             this.setState({ isPathNotFound: true });
