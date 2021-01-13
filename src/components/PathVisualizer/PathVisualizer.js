@@ -6,7 +6,7 @@ import { animatePath, animateWalls } from "../../visualizers";
 import { recursiveDivisionMaze, randomMaze } from "../../maze-algorithms";
 import AppNavbar from "../AppNavbar";
 import ErrorModal from '../ErrorModal';
-import { Progress, Tooltip } from "reactstrap";
+import { Progress } from "reactstrap";
 import Footer from "../Footer/Footer";
 import TooltipExampleMulti from '../ToolTip';
 
@@ -155,6 +155,8 @@ class PathVisualizer extends Component {
 
 /*----------------------------------------------------------clear helper functions---------------------------------------------------------*/
     clearGrid = () => {
+        if (this.state.isVisualizing)
+            return;
         for (let row = 0; row < this.state.grid.length; row++) {
             for (let col = 0; col < this.state.grid[0].length; col++) {
                 if (!((row === START_NODE_ROW && col === START_NODE_COL) || (row === FINISH_NODE_ROW && col === FINISH_NODE_COL))) {
@@ -167,6 +169,8 @@ class PathVisualizer extends Component {
     }
 
     clearPath = () => {
+        if (this.state.isVisualizing)
+            return;
         for (let row = 0; row < this.state.grid.length; row++) {
             for (let col = 0; col < this.state.grid[0].length; col++) {
                 if ((document.getElementById(`node-${row}-${col}`).className === "node node-shortest-path") || document.getElementById(`node-${row}-${col}`).className === "node node-visited") {
@@ -179,7 +183,10 @@ class PathVisualizer extends Component {
     }
 
 /*----------------------------------------------------------maze generations functions---------------------------------------------------------*/
-    generateRecursiveDivisionMaze = async() => {
+    generateRecursiveDivisionMaze = () => {
+        if (this.state.isVisualizing)
+            return;
+        this.setState({ isVisualizing: true });
         const { grid } = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
@@ -189,6 +196,9 @@ class PathVisualizer extends Component {
     }
 
     generateRandomMaze = () => {
+        if (this.state.isVisualizing)
+            return;
+        this.setState({ isVisualizing: true });
         const { grid } = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
@@ -208,7 +218,7 @@ class PathVisualizer extends Component {
             if (i === walls.length) {
                 setTimeout(() => {
                     const newGrid = getNewGridWithMaze(this.state.grid, walls);
-                    this.setState({ grid: newGrid });
+                    this.setState({ grid: newGrid, isVisualizing: false });
                 }, 10 * i);
                 return ;
             }
