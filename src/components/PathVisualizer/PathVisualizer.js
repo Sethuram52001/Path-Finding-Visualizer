@@ -179,15 +179,13 @@ class PathVisualizer extends Component {
     }
 
 /*----------------------------------------------------------maze generations functions---------------------------------------------------------*/
-    generateRecursiveDivisionMaze = () => {
+    generateRecursiveDivisionMaze = async() => {
         const { grid } = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         const walls = recursiveDivisionMaze(grid, startNode, finishNode);
         console.log(walls);
-        animateWalls(walls, grid);
-        //const newGrid = getNewGridWithMaze(this.state.grid, walls);
-        //this.setState({ grid: newGrid });
+        this.animateWalls(walls, grid);
     }
 
     generateRandomMaze = () => {
@@ -196,9 +194,30 @@ class PathVisualizer extends Component {
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         const walls = randomMaze(grid, startNode, finishNode);
         console.log(walls);
-        animateWalls(walls, grid);
-        //const newGrid = getNewGridWithMaze(this.state.grid, walls);
-        //this.setState({ grid: newGrid });
+        this.animateWalls(walls, grid);
+        // const msg = this.animateWalls(walls, grid);
+        // console.log(msg);
+        // if (msg) {
+        //     const newGrid = getNewGridWithMaze(this.state.grid, walls);
+        //     this.setState({ grid: newGrid });
+        // }
+    }
+
+    animateWalls = (walls, grid) => {
+        for (let i = 0; i <= walls.length; i++) {
+            if (i === walls.length) {
+                setTimeout(() => {
+                    const newGrid = getNewGridWithMaze(this.state.grid, walls);
+                    this.setState({ grid: newGrid });
+                }, 10 * i);
+                return ;
+            }
+            setTimeout(() => {
+                const wall = walls[i];
+                const node = grid[wall[0]][wall[1]];
+                document.getElementById(`node-${node.row}-${node.col}`).className = "node node-animated-wall";
+            }, 10 * i);
+        }
     }
 
     setVisualization = () => {
@@ -333,32 +352,3 @@ const getNewGridWithMaze = (grid, walls) => {
   }
   return newGrid;
 };
-/*
-                <Container>
-                    <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-                    <DropdownToggle caret>
-                        Algorithms
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <DropdownItem header>Pick the algorithm to visualize</DropdownItem>
-                        <DropdownItem>
-                            <Button onClick={this.visualizeDijkstra}>visualize dijkstra</Button>
-                        </DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem>
-                            <Button onClick={this.visualizeDFS}>visualize DFS</Button>  
-                        </DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem>
-                            <Button onClick={this.visualizeBFS}>visualize BFS</Button>    
-                        </DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem>
-                            <Button onClick={this.visualizeAstar}>visualize A*</Button>   
-                        </DropdownItem>                           
-                    </DropdownMenu>
-                    </ButtonDropdown>
-                    <Button onClick={this.clearGrid}>Clear Grid</Button>
-                    <Button onClick={this.clearPath}>Clear Paths</Button>
-                </Container>
-*/

@@ -1,5 +1,8 @@
 export function animateWalls(walls, grid) {
-    for (let i = 0; i < walls.length; i++) {
+    for (let i = 0; i <= walls.length; i++) {
+        if (i === walls.length) {
+            return true;
+        }
         setTimeout(() => {
             const wall = walls[i];
             const node = grid[wall[0]][wall[1]];
