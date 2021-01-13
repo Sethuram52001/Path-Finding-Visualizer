@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import "./PathVisualizer.css";
 import Node from "../Node/Node";
 import { dijkstra, getNodesInShortestPathOrder, dfs, bfs, astar } from "../../algorithms";
-import { animate } from "../../visualizers";
+import { animatePath, animateWalls } from "../../visualizers";
 import { recursiveDivisionMaze, randomMaze } from "../../maze-algorithms";
 import AppNavbar from "../AppNavbar";
 import ErrorModal from '../ErrorModal';
 import { Progress, Tooltip } from "reactstrap";
-import Footer from "../Footer";
+import Footer from "../Footer/Footer";
 import TooltipExampleMulti from '../ToolTip';
 
 // constants
@@ -70,7 +70,7 @@ class PathVisualizer extends Component {
                 shortestNodes: nodesInShortestPathOrder.length,
                 totalNodes: visitedNodesInOrder.length
             });
-            animate(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
+            animatePath(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
         } catch (error) {
             console.log("path not found")
             this.setState({ isPathNotFound: true });
@@ -94,7 +94,7 @@ class PathVisualizer extends Component {
                 shortestNodes: nodesInShortestPathOrder.length,
                 totalNodes: visitedNodesInOrder.length
             });
-            animate(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);   
+            animatePath(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);   
         } catch (error) {
             console.log("path not found")
             this.setState({ isPathNotFound: true });
@@ -118,7 +118,7 @@ class PathVisualizer extends Component {
                 shortestNodes: nodesInShortestPathOrder.length,
                 totalNodes: visitedNodesInOrder.length
             });
-            animate(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);    
+            animatePath(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);    
         } catch (error) {
             console.log("path not found")
             this.setState({ isPathNotFound: true });
@@ -143,7 +143,7 @@ class PathVisualizer extends Component {
                 shortestNodes: nodesInShortestPathOrder.length,
                 totalNodes: visitedNodesInOrder.length
             });
-            animate(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
+            animatePath(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
         } catch (error) {
             console.log("path not found")
             this.setState({ isPathNotFound: true });
@@ -185,13 +185,9 @@ class PathVisualizer extends Component {
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         const walls = recursiveDivisionMaze(grid, startNode, finishNode);
         console.log(walls);
-        const newGrid = getNewGridWithMaze(this.state.grid, walls);
-        this.setState({ grid: newGrid });
-        for (let i = 0; i < walls.length; i++) {
-            let wall = walls[i];
-            let node = this.state.grid[wall[0]][wall[1]];
-            document.getElementById(`node-${node.row}-${node.col}`).className = "node node-wall";
-        }
+        animateWalls(walls, grid);
+        //const newGrid = getNewGridWithMaze(this.state.grid, walls);
+        //this.setState({ grid: newGrid });
     }
 
     generateRandomMaze = () => {
@@ -200,13 +196,9 @@ class PathVisualizer extends Component {
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         const walls = randomMaze(grid, startNode, finishNode);
         console.log(walls);
-        const newGrid = getNewGridWithMaze(this.state.grid, walls);
-        this.setState({ grid: newGrid });
-        for (let i = 0; i < walls.length; i++) {
-            let wall = walls[i];
-            let node = this.state.grid[wall[0]][wall[1]];
-            document.getElementById(`node-${node.row}-${node.col}`).className = "node node-wall"
-        }
+        animateWalls(walls, grid);
+        //const newGrid = getNewGridWithMaze(this.state.grid, walls);
+        //this.setState({ grid: newGrid });
     }
 
     setVisualization = () => {

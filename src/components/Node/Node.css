@@ -25,6 +25,43 @@
     background-size: cover;*/
 }
 
+.node-animated-wall {
+    animation-name: wallAnimation;
+    animation-duration: 0.25s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+}
+
+@keyframes wallAnimation {
+  0% {
+    transform: scale(0.4);
+    background-color: rgb(2, 36, 51);
+    border-radius: 30%;
+  }
+
+  50% {
+    transform: scale(0.6);
+    background-color: rgb(2, 36, 51);
+    border-radius: 20%;
+  }
+
+  75% {
+    transform: scale(0.8);
+    background-color: rgb(2, 36, 51);
+    border-radius: 10%;
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: rgb(2, 36, 51);
+    border: 1px solid rgb(2, 36, 51);
+  }
+}
+
 .node-visited {
   animation-name: visitedAnimation;
   animation-duration: 1.5s;

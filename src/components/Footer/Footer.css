@@ -1,0 +1,27 @@
+.fa {
+  padding: 10px;
+  font-size: 20px;
+  width: 60px;
+  text-align: center;
+  text-decoration: none;
+  margin: 5px 2px;
+}
+
+.fa:hover {
+    opacity: 0.7;
+}
+
+.fa-linkedin {
+  background: #007bb5;
+  color: white;
+}
+
+.fa-github {
+  background: black;
+  color: white;
+}
+
+.fa-medium {
+    background-color: black;
+    color: white;
+}
