@@ -58,7 +58,7 @@ const AppNavbar = (props) => {
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem>
-                    <Button onClick={props.handleMaze}>Recursive Division</Button>
+                  <Button onClick={() => { props.handleMaze(); props.handleVisualization() }}>Recursive Division</Button>
                 </DropdownItem>
                 <DropdownItem>
                     <Button onClick={props.handleRandomMaze}>Random Maze</Button>

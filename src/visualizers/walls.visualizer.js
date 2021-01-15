@@ -1,6 +1,11 @@
-export function animateWalls(walls, grid) {
+import { setVisualizationState } from "./index";
+
+export function animateWalls(klass, walls, grid) {
     for (let i = 0; i <= walls.length; i++) {
         if (i === walls.length) {
+            setTimeout(() => {
+                setVisualizationState(klass);
+            }, 10*i);
             return true;
         }
         setTimeout(() => {

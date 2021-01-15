@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import "./PathVisualizer.css";
 import Node from "../Node/Node";
 import { dijkstra, getNodesInShortestPathOrder, dfs, bfs, astar } from "../../algorithms";
-import { animatePath, animateWalls } from "../../visualizers";
+import { animatePath, animateWalls, setVisualizationState } from "../../visualizers";
 import { recursiveDivisionMaze, randomMaze } from "../../maze-algorithms";
 import AppNavbar from "../AppNavbar";
 import ErrorModal from '../ErrorModal';
 import { Progress } from "reactstrap";
 import Footer from "../Footer/Footer";
 import TooltipExampleMulti from '../ToolTip';
-import { setVisualizationState } from '../../visualizers/algorithms.visualizer';
 
 // constants
 const START_NODE_ROW = 10;
@@ -196,6 +195,7 @@ class PathVisualizer extends Component {
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         const walls = recursiveDivisionMaze(grid, startNode, finishNode);
         console.log(walls);
+        //animateWalls(this,walls, grid);
         this.animateWalls(walls, grid);
     }
 
@@ -245,7 +245,7 @@ class PathVisualizer extends Component {
     }
     
     render() { 
-        const { grid, mouseIsPressed, isVisualizing } = this.state;
+        const { grid, mouseIsPressed } = this.state;
         return ( 
             <>
                 <TooltipExampleMulti />
