@@ -9,6 +9,7 @@ import ErrorModal from '../ErrorModal';
 import { Progress } from "reactstrap";
 import Footer from "../Footer/Footer";
 import TooltipExampleMulti from '../ToolTip';
+import { setVisualizationState } from '../../visualizers/algorithms.visualizer';
 
 // constants
 const START_NODE_ROW = 10;
@@ -24,7 +25,8 @@ class PathVisualizer extends Component {
         totalNodes: 100,
         shortestNodes: 0,
         tooltipOpen: false,
-        isVisualizing: false
+        isVisualizing: false,
+        name: true
     }
     
     // creates the grid when the component is mounted
@@ -70,7 +72,7 @@ class PathVisualizer extends Component {
                 shortestNodes: nodesInShortestPathOrder.length,
                 totalNodes: visitedNodesInOrder.length
             });
-            animatePath(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
+            animatePath(this, visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
         } catch (error) {
             console.log("path not found")
             this.setState({ isPathNotFound: true });
@@ -78,6 +80,8 @@ class PathVisualizer extends Component {
                 this.setState({ isPathNotFound: false });
             }, 3000);
         }
+        console.log(this.state.isVisualizing)
+        //this.setState({ isVisualizing: !this.state.isVisualizing });
     }
 
     // dfs
@@ -94,7 +98,7 @@ class PathVisualizer extends Component {
                 shortestNodes: nodesInShortestPathOrder.length,
                 totalNodes: visitedNodesInOrder.length
             });
-            animatePath(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);   
+            animatePath(this, visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);   
         } catch (error) {
             console.log("path not found")
             this.setState({ isPathNotFound: true });
@@ -118,7 +122,7 @@ class PathVisualizer extends Component {
                 shortestNodes: nodesInShortestPathOrder.length,
                 totalNodes: visitedNodesInOrder.length
             });
-            animatePath(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);    
+            animatePath(this, visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);    
         } catch (error) {
             console.log("path not found")
             this.setState({ isPathNotFound: true });
@@ -143,7 +147,7 @@ class PathVisualizer extends Component {
                 shortestNodes: nodesInShortestPathOrder.length,
                 totalNodes: visitedNodesInOrder.length
             });
-            animatePath(visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
+            animatePath(this, visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
         } catch (error) {
             console.log("path not found")
             this.setState({ isPathNotFound: true });
@@ -234,6 +238,10 @@ class PathVisualizer extends Component {
         this.setState({ 
             isVisualizing: !this.state.isVisualizing
         });
+    }
+
+    handleClick = () => {
+        setVisualizationState(this);
     }
     
     render() { 

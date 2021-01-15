@@ -1,10 +1,13 @@
 // first we animate the paths which are covered during algorithm
 // next we call the animateShortestPath func which recieves the shortest path   
-export function animatePath(visitedNodesInOrder, nodesInShortestPath, startNode, finishNode) {
+
+// ref for setting state in a normal function outside of a component: https://stackoverflow.com/questions/50090636/react-setting-component-state-using-a-function-outside-of-state-is-it-wrong
+export const animatePath = (klass,visitedNodesInOrder, nodesInShortestPath, startNode, finishNode) => {
   for (let i = 0; i <= visitedNodesInOrder.length; i++) {
     if (i === visitedNodesInOrder.length) {
       setTimeout(() => {
         animateShortestPath(nodesInShortestPath);
+        setVisualizationState(klass);
       }, 10 * i);
       return;
     }
@@ -24,4 +27,8 @@ function animateShortestPath(nodesInShortestPath) {
       document.getElementById(`node-${node.row}-${node.col}`).className = `node node-shortest-path`;
     }, 50 * i);
   }
+}
+
+export const setVisualizationState = (klass) => {
+  klass.setState({ isVisualizing: false  });
 }

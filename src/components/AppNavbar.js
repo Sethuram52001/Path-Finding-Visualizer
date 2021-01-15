@@ -38,17 +38,17 @@ const AppNavbar = (props) => {
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem>
-                  {/*<Button onClick={() => { props.handleDijkstra(); props.handleVisualization() }}>Dijkstra</Button>*/}
-                  <Button onClick={ props.handleDijkstra}>Dijkstra</Button>
+                  <Button onClick={() => { props.handleDijkstra(); props.handleVisualization() }}>Dijkstra</Button>
+                  {/* <Button onClick={ props.handleDijkstra}>Dijkstra</Button> */}
                 </DropdownItem>
                 <DropdownItem>
-                    <Button onClick={props.handleDFS}>DFS</Button>              
+                  <Button onClick={() => { props.handleDFS(); props.handleVisualization() }}>DFS</Button>              
                 </DropdownItem>
                 <DropdownItem>
-                    <Button onClick={props.handleBFS}>BFS</Button>
+                  <Button onClick={() => { props.handleBFS(); props.handleVisualization() }}>BFS</Button>
                 </DropdownItem>
                 <DropdownItem>
-                    <Button onClick={props.handleAstar}>Astar</Button>
+                  <Button onClick={() => { props.handleAstar(); props.handleVisualization() }}>Astar</Button>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
