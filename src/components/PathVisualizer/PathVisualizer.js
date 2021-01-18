@@ -11,10 +11,10 @@ import Footer from "../Footer/Footer";
 import TooltipExampleMulti from '../ToolTip';
 
 // constants
-const START_NODE_ROW = 10;
-const START_NODE_COL = 15;
-const FINISH_NODE_ROW = 10;
-const FINISH_NODE_COL = 35; 
+let START_NODE_ROW = 10;
+let START_NODE_COL = 15;
+let FINISH_NODE_ROW = 10;
+let FINISH_NODE_COL = 35; 
 
 class PathVisualizer extends Component {
     state = {
@@ -25,11 +25,11 @@ class PathVisualizer extends Component {
         shortestNodes: 0,
         tooltipOpen: false,
         isVisualizing: false,
-        name: true
+        mainIsPressed: false
     }
     
     // creates the grid when the component is mounted
-    componentDidMount() { 
+    componentDidMount() {
         let grid = getInitialGrid();
         this.setState({ grid });
     }
@@ -40,6 +40,11 @@ class PathVisualizer extends Component {
 
     // handling mouse events to set up walls
     handleMouseDown(row, col) {
+        // start node | finish node
+        if ((row === START_NODE_ROW && col === START_NODE_COL) || (row === FINISH_NODE_ROW && col === FINISH_NODE_COL)) {
+            console.log("main must be called");
+            this.setState({ mainIsPressed: true });
+        }
         const newGrid = gridWithWallToggled(this.state.grid, row, col);
         this.setState({ grid: newGrid, mouseIsPressed: true });
     }
@@ -47,12 +52,17 @@ class PathVisualizer extends Component {
     handleMouseEnter(row, col) {
         if (!this.state.mouseIsPressed)
             return;
+        // start node | finish node
+        if (this.state.mainIsPressed) {
+            START_NODE_ROW = row;
+            START_NODE_COL = col;
+        }
         const newGrid = gridWithWallToggled(this.state.grid, row, col);
         this.setState({ grid: newGrid });
     }
 
     handleMouseUp() {
-        this.setState({ mouseIsPressed: false });
+        this.setState({ mouseIsPressed: false, mainIsPressed: false });
         //console.log("mouse up is called")
     }
 
@@ -246,6 +256,7 @@ class PathVisualizer extends Component {
     
     render() { 
         const { grid, mouseIsPressed } = this.state;
+
         return ( 
             <>
                 <TooltipExampleMulti />
