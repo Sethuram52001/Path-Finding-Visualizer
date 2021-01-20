@@ -10,11 +10,11 @@ import { Progress } from "reactstrap";
 import Footer from "../Footer/Footer";
 import TooltipExampleMulti from '../ToolTip';
 
-// constants
+//constants
 let START_NODE_ROW = 10;
 let START_NODE_COL = 15;
 let FINISH_NODE_ROW = 10;
-let FINISH_NODE_COL = 35; 
+let FINISH_NODE_COL = 35;
 
 class PathVisualizer extends Component {
     state = {
@@ -25,12 +25,18 @@ class PathVisualizer extends Component {
         shortestNodes: 0,
         tooltipOpen: false,
         isVisualizing: false,
-        mainIsPressed: false
+        mainIsPressed: "",
+        startNode: [START_NODE_ROW, START_NODE_COL],
+        finishNode: [FINISH_NODE_ROW,FINISH_NODE_COL]
     }
-    
+
     // creates the grid when the component is mounted
     componentDidMount() {
-        let grid = getInitialGrid();
+        // this.setState({
+        //     startNode: [START_NODE_ROW, START_NODE_COL],
+        //     finishNode: [FINISH_NODE_ROW, FINISH_NODE_COL]
+        // });
+        let grid = this.getInitialGrid();
         this.setState({ grid });
     }
 
@@ -41,9 +47,17 @@ class PathVisualizer extends Component {
     // handling mouse events to set up walls
     handleMouseDown(row, col) {
         // start node | finish node
-        if ((row === START_NODE_ROW && col === START_NODE_COL) || (row === FINISH_NODE_ROW && col === FINISH_NODE_COL)) {
-            console.log("main must be called");
-            this.setState({ mainIsPressed: true });
+        const { startNode, finishNode,grid } = this.state;
+        let start_x = startNode[0];
+        let start_y = startNode[1];
+        let finish_x = finishNode[0];
+        let finish_y = finishNode[1];
+        if (grid[row][col].isStart) {
+            this.setState({ mainIsPressed: "start" });
+            console.log("start node - main is pressed")
+        }
+        else if (grid[row][col].isFinish) {
+            this.setState({ mainIsPressed: "end" });
         }
         const newGrid = gridWithWallToggled(this.state.grid, row, col);
         this.setState({ grid: newGrid, mouseIsPressed: true });
@@ -53,17 +67,36 @@ class PathVisualizer extends Component {
         if (!this.state.mouseIsPressed)
             return;
         // start node | finish node
-        if (this.state.mainIsPressed) {
-            START_NODE_ROW = row;
-            START_NODE_COL = col;
+        const { grid } = this.state;
+        if (this.state.mainIsPressed === "start") {
+            grid[row][col].isStart = true;
+            this.setState({ 
+                startNode: [row,col]
+            });
         }
-        const newGrid = gridWithWallToggled(this.state.grid, row, col);
-        this.setState({ grid: newGrid });
+        else {
+            console.log("walls have no work here")
+            const newGrid = gridWithWallToggled(this.state.grid, row, col);
+            this.setState({ grid: newGrid });
+        }
     }
 
-    handleMouseUp() {
-        this.setState({ mouseIsPressed: false, mainIsPressed: false });
+    handleMouseLeave = (row, col) => {
+        let arr = this.state.grid;
+        if (this.state.mainClicked !== "") {
+            arr[row][col].isStart = false;
+            //arr[row][col].isEnd=false;
+            this.setState({
+                grid: arr
+            })
+        }
+    }
+
+    handleMouseUp = (row, col) => {
+        this.setState({ mouseIsPressed: false, mainIsPressed: "" });
         //console.log("mouse up is called")
+        const { grid } = this.state;
+        grid[row][col].isStart = true;
     }
 
 /*----------------------------------------------------------algorithm helper functions---------------------------------------------------------*/
@@ -77,7 +110,7 @@ class PathVisualizer extends Component {
         try {
             const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-            this.setState({ 
+            this.setState({
                 shortestNodes: nodesInShortestPathOrder.length,
                 totalNodes: visitedNodesInOrder.length
             });
@@ -103,11 +136,11 @@ class PathVisualizer extends Component {
         try {
             const visitedNodesInOrder = dfs(grid, startNode, finishNode);
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-            this.setState({ 
+            this.setState({
                 shortestNodes: nodesInShortestPathOrder.length,
                 totalNodes: visitedNodesInOrder.length
             });
-            animatePath(this, visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);   
+            animatePath(this, visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
         } catch (error) {
             console.log("path not found")
             this.setState({ isPathNotFound: true });
@@ -127,11 +160,11 @@ class PathVisualizer extends Component {
         try {
             const visitedNodesInOrder = bfs(grid, startNode, finishNode);
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-            this.setState({ 
+            this.setState({
                 shortestNodes: nodesInShortestPathOrder.length,
                 totalNodes: visitedNodesInOrder.length
             });
-            animatePath(this, visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);    
+            animatePath(this, visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
         } catch (error) {
             console.log("path not found")
             this.setState({ isPathNotFound: true });
@@ -152,7 +185,7 @@ class PathVisualizer extends Component {
         try {
             const visitedNodesInOrder = astar(grid, startNode, finishNode);
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-            this.setState({ 
+            this.setState({
                 shortestNodes: nodesInShortestPathOrder.length,
                 totalNodes: visitedNodesInOrder.length
             });
@@ -177,7 +210,7 @@ class PathVisualizer extends Component {
                 }
             }
         }
-        const newGrid = getInitialGrid();
+        const newGrid = this.getInitialGrid();
         this.setState({ grid: newGrid });
     }
 
@@ -189,7 +222,7 @@ class PathVisualizer extends Component {
                 if ((document.getElementById(`node-${row}-${col}`).className === "node node-shortest-path") || document.getElementById(`node-${row}-${col}`).className === "node node-visited") {
                     document.getElementById(`node-${row}-${col}`).className = "node";
                 }
-            } 
+            }
         }
         const newGrid = getGridWithoutPath(this.state.grid);
         this.setState({ grid: newGrid });
@@ -245,7 +278,7 @@ class PathVisualizer extends Component {
     }
 
     setVisualization = () => {
-        this.setState({ 
+        this.setState({
             isVisualizing: !this.state.isVisualizing
         });
     }
@@ -253,11 +286,11 @@ class PathVisualizer extends Component {
     handleClick = () => {
         setVisualizationState(this);
     }
-    
-    render() { 
+
+    render() {
         const { grid, mouseIsPressed } = this.state;
 
-        return ( 
+        return (
             <>
                 <TooltipExampleMulti />
                 {this.state.isPathNotFound ? <ErrorModal /> : null }
@@ -292,7 +325,8 @@ class PathVisualizer extends Component {
                                             mouseIsPressed={mouseIsPressed}
                                             onMouseDown={(row, col) => this.handleMouseDown(row, col)}
                                             onMouseEnter={(row, col) => this.handleMouseEnter(row, col)}
-                                            onMouseUp={() => this.handleMouseUp()}
+                                            onMouseUp={() => this.handleMouseUp(row,col)}
+                                            onMouseLeave={(row, col) => this.handleMouseLeave(row, col)}
                                         />
                                     )
                                 })}
@@ -304,38 +338,49 @@ class PathVisualizer extends Component {
             </>
          );
     }
+
+    // creating the initial grid, calls the createNode() function
+    // to initialise the node with initial properties
+    //const 
+    getInitialGrid = () => {
+        let grid = [];
+        const { startNode, finishNode } = this.state;
+        for (let row = 0; row < 20; row++) {
+            const currRow = [];
+            for (let col = 0; col < 40; col++) { //  previously I had it as 20*50
+                //currRow.push(createNode(row, col));
+                currRow.push(createNode(row, col, startNode, finishNode));
+            }
+            grid.push(currRow);
+        }
+        return grid;
+    }
+
 }
- 
+
 export default PathVisualizer;
 
 /*------------------------------------------------------------helper functions----------------------------------------------------------------*/
 
-// creating the initial grid, calls the createNode() function
-// to initialise the node with initial properties
-const getInitialGrid = () => {
-    let grid = [];
-    for (let row = 0; row < 20; row++) {
-        const currRow = [];
-        for (let col = 0; col < 40; col++) { //  previously I had it as 20*50
-            currRow.push(createNode(row, col));
-        }
-        grid.push(currRow);
-    }
-    return grid;
-}
+// prev getInitialGrid func was here
 
 // initialising the node with its initial properties
-const createNode = (row, col) => {
+const createNode = (row, col, startNode, finishNode) => {
+    let start_x = startNode[0];
+    let start_y = startNode[1];
+    let finish_x = finishNode[0];
+    let finish_y = finishNode[1];
+
     return {
         row,
         col,
-        isStart: row === START_NODE_ROW && col === START_NODE_COL,
-        isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
+        isStart: row === start_x && col === start_y,
+        isFinish: row === finish_x && col === finish_y,
         isWall: false,
         distance: Infinity,
         isVisited: false,
         previousNode: null,
-        distanceToFinishNode: Math.abs(FINISH_NODE_ROW - row) + Math.abs(FINISH_NODE_COL - col)
+        distanceToFinishNode: Math.abs(finish_x - row) + Math.abs(finish_y - col)
     }
 }
 
