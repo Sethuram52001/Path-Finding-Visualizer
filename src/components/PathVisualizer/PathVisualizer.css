@@ -1,3 +1,34 @@
+@media only screen and (min-width: 900px) {
 .grid {
     margin: 60px;
 }
+}
+
+@media only screen and (max-width: 899px) {
+    .grid {
+        margin: 30px;
+    }
+}
+
+/*credits: https://codepen.io/demilad/pen/bZRjpb?editors=1100*/
+.circle {
+  position: relative;
+  border-radius: 100%;
+  width: 8rem;
+  height: 8rem;
+  background: linear-gradient(40deg, #FF0080,#FF8C00 70%);
+  margin: auto;
+}
+
+.crescent {
+  position: absolute;
+  border-radius: 100%;
+  right: 0;
+  width: 6rem;
+  height: 6rem;
+  background: white;
+  transform: scale(0);
+  transform-origin: top right;
+  transition: transform .6s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+

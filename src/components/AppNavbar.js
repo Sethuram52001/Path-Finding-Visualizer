@@ -16,6 +16,7 @@ import {
   ButtonGroup,
   Progress
 } from 'reactstrap';
+import DarkModeToggle from './DarkModeToggle/DarkModeToggle';
 
 const AppNavbar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -65,23 +66,20 @@ const AppNavbar = (props) => {
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
-          </Nav>
-            <NavbarText>
-                <ButtonGroup>
-                    <Button id={"Tooltip-" + 0} onClick={props.handleClearPath}>Clear Path</Button>
-                    <Button id={"Tooltip-" + 1} onClick={props.handleClearGrid}>Clear Grid</Button>
-                </ButtonGroup>          
-            </NavbarText>     
+          </Nav>  
         </Collapse>
+        <NavbarText>
+          <ButtonGroup>
+            <Button id={"Tooltip-" + 0} onClick={props.handleClearPath}>Clear Path</Button>
+            <Button id={"Tooltip-" + 1} onClick={props.handleClearGrid}>Clear Grid</Button>
+          </ButtonGroup>          
+        </NavbarText>   
+        <NavbarText>
+          <DarkModeToggle />
+        </NavbarText>
       </Navbar>
     </div>
   );
 }
 
 export default AppNavbar;
-
-/*
-      <Button className="mr-1" color="secondary" id={"Tooltip-" + id}>
-        {item.text}
-      </Button>
-*/

@@ -27,7 +27,7 @@ class PathVisualizer extends Component {
         isVisualizing: false,
         mainIsPressed: "",
         startNode: [START_NODE_ROW, START_NODE_COL],
-        finishNode: [FINISH_NODE_ROW,FINISH_NODE_COL]
+        finishNode: [FINISH_NODE_ROW, FINISH_NODE_COL],
     }
 
     // creates the grid when the component is mounted

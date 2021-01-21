@@ -1,9 +1,21 @@
+@media only screen and (min-width: 900px) {
 .node {
     width: 28px;
     height: 28px;
     outline: 1px solid black;
     display: inline-block;
     margin-bottom: -4px;
+}
+}
+
+@media only screen and (max-width: 899px) {
+.node {
+    width: 6px;
+    height: 6px;
+    outline: 0.5px solid black;
+    display: inline-block;
+    margin-bottom: 0px;
+}
 }
 
 .node-start {
