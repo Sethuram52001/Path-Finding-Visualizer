@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "./Node.css";
+import "./Node.scss";
 import xwing from "../../images/x-wing.png";
 import deathstar from "../../images/death-star.png";
 
