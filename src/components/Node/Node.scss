@@ -1,18 +1,24 @@
 $outline-light-theme: black;
 $outline-dark-theme: white;
 
+.DarkMode {
+  .node {
+    outline: 1px solid black;
+  }
+}
+
+.LightMode {
+  .node {
+    outline: 1px solid black;
+  }
+}
+
 @media only screen and (min-width: 900px) {
 .node {
     width: 28px;
     height: 28px;
     display: inline-block;
     margin-bottom: -4px;
-    .DarkMode {
-      outline: 1px solid white;
-    }
-    body.LightMode {
-      outline: 1px solid black;
-    }
 }
 }
 
@@ -133,16 +139,16 @@ $outline-dark-theme: white;
 @keyframes shortestPath {
   0% {
     transform: scale(0.6);
-    background-color: rgb(255, 254, 106);
+    background-color: rgb(250, 181, 92);
   }
 
   50% {
     transform: scale(1.2);
-    background-color: rgb(255, 254, 106);
+    background-color: rgb(255, 177, 59);
   }
 
   100% {
     transform: scale(1);
-    background-color: rgb(255, 254, 106);
+    background-color: rgb(255, 123, 0);
   }
 }

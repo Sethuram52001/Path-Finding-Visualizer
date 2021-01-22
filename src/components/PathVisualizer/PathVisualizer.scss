@@ -1,6 +1,13 @@
 @media only screen and (min-width: 900px) {
 .grid {
-    margin: 60px;
+  margin: 70px; /*60px*/
+}
+
+.DarkMode {
+  .grid {
+      margin: 70px;
+      background-color: #151a35;
+  }
 }
 }
 
@@ -31,4 +38,3 @@
   transform-origin: top right;
   transition: transform .6s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
-

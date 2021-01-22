@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "./PathVisualizer.css";
+import "./PathVisualizer.scss";
 import Node from "../Node/Node";
 import { dijkstra, getNodesInShortestPathOrder, dfs, bfs, astar } from "../../algorithms";
 import { animatePath, animateWalls, setVisualizationState } from "../../visualizers";
