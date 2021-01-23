@@ -16,7 +16,8 @@ import {
   ButtonGroup,
   Progress
 } from 'reactstrap';
-import DarkModeToggle from './DarkModeToggle/DarkModeToggle';
+import DarkModeToggle from "../DarkModeToggle/DarkModeToggle";
+import ProgressBar from "../ProgressBar/ProgressBar";
 
 const AppNavbar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +26,7 @@ const AppNavbar = (props) => {
 
   return (
     <div>
-      <Navbar color="light" light expand="md">
+      <Navbar color="dark" dark expand="md">
         <NavbarBrand href="/">PathVisualizer</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
@@ -69,11 +70,14 @@ const AppNavbar = (props) => {
           </Nav>  
         </Collapse>
         <NavbarText>
+          <ProgressBar visitedNodes={props.visitedNodes} shortestNodes={props.shortestNodes} />
+        </NavbarText>
+        <NavbarText>
           <ButtonGroup>
             <Button id={"Tooltip-" + 0} onClick={props.handleClearPath}>Clear Path</Button>
             <Button id={"Tooltip-" + 1} onClick={props.handleClearGrid}>Clear Grid</Button>
           </ButtonGroup>          
-        </NavbarText>   
+        </NavbarText>
         <NavbarText>
           <DarkModeToggle />
         </NavbarText>

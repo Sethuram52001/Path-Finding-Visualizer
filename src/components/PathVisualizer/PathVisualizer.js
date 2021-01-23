@@ -4,11 +4,11 @@ import Node from "../Node/Node";
 import { dijkstra, getNodesInShortestPathOrder, dfs, bfs, astar } from "../../algorithms";
 import { animatePath, animateWalls, setVisualizationState } from "../../visualizers";
 import { recursiveDivisionMaze, randomMaze } from "../../maze-algorithms";
-import AppNavbar from "../AppNavbar";
-import ErrorModal from '../ErrorModal';
+import AppNavbar from "../AppNavbar/AppNavbar";
+import ErrorModal from '../../components/ErrorModal/ErrorModal';
 import { Progress } from "reactstrap";
 import Footer from "../Footer/Footer";
-import TooltipExampleMulti from '../ToolTip';
+import TooltipExampleMulti from '../../components/ToolTip/ToolTip';
 
 //constants
 let START_NODE_ROW = 10;
@@ -21,7 +21,7 @@ class PathVisualizer extends Component {
         grid: [],
         mouseIsPressed: false,
         isPathNotFound: false,
-        totalNodes: 100,
+        visitedNodes: 0,
         shortestNodes: 0,
         tooltipOpen: false,
         isVisualizing: false,
@@ -112,7 +112,7 @@ class PathVisualizer extends Component {
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
             this.setState({
                 shortestNodes: nodesInShortestPathOrder.length,
-                totalNodes: visitedNodesInOrder.length
+                visitedNodes: visitedNodesInOrder.length
             });
             animatePath(this, visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
         } catch (error) {
@@ -138,7 +138,7 @@ class PathVisualizer extends Component {
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
             this.setState({
                 shortestNodes: nodesInShortestPathOrder.length,
-                totalNodes: visitedNodesInOrder.length
+                visitedNodes: visitedNodesInOrder.length
             });
             animatePath(this, visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
         } catch (error) {
@@ -162,7 +162,7 @@ class PathVisualizer extends Component {
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
             this.setState({
                 shortestNodes: nodesInShortestPathOrder.length,
-                totalNodes: visitedNodesInOrder.length
+                visitedNodes: visitedNodesInOrder.length
             });
             animatePath(this, visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
         } catch (error) {
@@ -187,7 +187,7 @@ class PathVisualizer extends Component {
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
             this.setState({
                 shortestNodes: nodesInShortestPathOrder.length,
-                totalNodes: visitedNodesInOrder.length
+                visitedNodes: visitedNodesInOrder.length
             });
             animatePath(this, visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
         } catch (error) {
@@ -211,7 +211,7 @@ class PathVisualizer extends Component {
             }
         }
         const newGrid = this.getInitialGrid();
-        this.setState({ grid: newGrid });
+        this.setState({ grid: newGrid, visitedNodes: 0, shortestNodes: 0 });
     }
 
     clearPath = () => {
@@ -225,7 +225,7 @@ class PathVisualizer extends Component {
             }
         }
         const newGrid = getGridWithoutPath(this.state.grid);
-        this.setState({ grid: newGrid });
+        this.setState({ grid: newGrid, visitedNodes: 0, shortestNodes: 0 });
     }
 
 /*----------------------------------------------------------maze generations functions---------------------------------------------------------*/
@@ -288,7 +288,7 @@ class PathVisualizer extends Component {
     }
 
     render() {
-        const { grid, mouseIsPressed } = this.state;
+        const { grid, mouseIsPressed, visitedNodes, shortestNodes } = this.state;
 
         return (
             <>
@@ -304,10 +304,12 @@ class PathVisualizer extends Component {
                     handleMaze={this.generateRecursiveDivisionMaze}
                     handleRandomMaze={this.generateRandomMaze}
                     handleVisualization={this.setVisualization}
+                    visitedNodes={visitedNodes}
+                    shortestNodes={shortestNodes}
                 />
-                <Progress multi>
-                    <Progress bar animated value={(this.state.shortestNodes/this.state.totalNodes)*100}>{ ((this.state.shortestNodes/this.state.totalNodes)*100).toPrecision(4) }%</Progress>
-                </Progress>
+                {/* <Progress multi>
+                    <Progress bar animated value={(this.state.shortestNodes/this.state.visitedNodes)*100}>{ ((this.state.shortestNodes/this.state.totalNodes)*100).toPrecision(4) }%</Progress>
+                </Progress> */}
                 <div className="grid">
                     {grid.map((row, rowIdx) => {
                         return (
