@@ -1,21 +1,46 @@
-@media only screen and (min-width: 900px) {
-.grid {
-  margin: 70px; /*60px*/
-}
-
+// my lap - width - 1280 px
+/*
+320px — 480px: Mobile devices
+481px — 768px: iPads, Tablets
+769px — 1024px: Small screens, laptops
+1025px — 1200px: Desktops, large screens
+*/
 .DarkMode {
   .grid {
-      margin: 70px;
-      background-color: #151a35;
+    background-color: #151a35;
   }
 }
+
+@media only screen and (min-width: 320px) {
+  .grid {
+    margin: 20px;
+  }
 }
 
-@media only screen and (max-width: 899px) {
-    .grid {
-        margin: 30px;
-    }
+@media only screen and (min-width: 481px) {
+  .grid {
+    margin: 0 auto;
+  }
 }
+
+@media only screen and (min-width: 769px) {
+  .grid {
+    //margin: 0 auto;
+    margin: 70px;
+  }
+}
+
+// @media only screen and (min-width: 900px) {
+// .grid {
+//   margin: 70px; /*60px*/
+// }
+// }
+
+// @media only screen and (max-width: 899px) {
+//     .grid {
+//         margin: 30px;
+//     }
+// }
 
 /*credits: https://codepen.io/demilad/pen/bZRjpb?editors=1100*/
 .circle {

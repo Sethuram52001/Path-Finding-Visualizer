@@ -38,6 +38,7 @@ class PathVisualizer extends Component {
         // });
         let grid = this.getInitialGrid();
         this.setState({ grid });
+        console.log(window.screen.width);
     }
 
     toggle = () => {
