@@ -38,7 +38,18 @@ class PathVisualizer extends Component {
         // });
         let grid = this.getInitialGrid();
         this.setState({ grid });
-        console.log(window.screen.width);
+        window.addEventListener("resize", this.updateDimesions);
+    }
+
+    updateDimesions = () => {
+        console.log("update dimesions:- " + "width: " + window.screen.width + " height: " + window.screen.height);
+        console.log("updated width: " + (28 / 1280) * window.screen.width);
+        console.log("updated height: " + (28 / 720) * window.screen.height);
+        const updatedWidth = (28 / 1280) * window.screen.width;
+        const updatedHeight = (28 / 720) * window.screen.height;
+        //footer.style.setProperty('--footer-color', input.value)
+        document.querySelector('node').style.setProperty('--width', updatedWidth);
+        document.querySelector('node').style.setProperty('--height', updatedHeight)
     }
 
     toggle = () => {
@@ -60,8 +71,10 @@ class PathVisualizer extends Component {
         else if (grid[row][col].isFinish) {
             this.setState({ mainIsPressed: "end" });
         }
-        const newGrid = gridWithWallToggled(this.state.grid, row, col);
-        this.setState({ grid: newGrid, mouseIsPressed: true });
+        else {
+            const newGrid = gridWithWallToggled(this.state.grid, row, col);
+            this.setState({ grid: newGrid, mouseIsPressed: true });
+        }
     }
 
     handleMouseEnter(row, col) {
@@ -69,7 +82,7 @@ class PathVisualizer extends Component {
             return;
         // start node | finish node
         const { grid } = this.state;
-        if (this.state.mainIsPressed === "start") {
+        if (this.state.mainIsPressed == "start") {
             grid[row][col].isStart = true;
             this.setState({ 
                 startNode: [row,col]
@@ -98,6 +111,7 @@ class PathVisualizer extends Component {
         //console.log("mouse up is called")
         const { grid } = this.state;
         grid[row][col].isStart = true;
+        this.getInitialGrid();
     }
 
 /*----------------------------------------------------------algorithm helper functions---------------------------------------------------------*/

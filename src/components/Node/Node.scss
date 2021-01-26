@@ -15,8 +15,8 @@ $outline-dark-theme: white;
 
 @media only screen and (min-width: 320px) {
   .node {
-     width: 9px;
-     height: 9px;
+     width: var(--width); //9px
+    height: var(--height);//9px;
      border: 1px solid black;
      //outline: 0.5px solid black;
      display: inline-block;
@@ -26,11 +26,20 @@ $outline-dark-theme: white;
 
 @media only screen and (min-width: 481px) {
   .node {
+    width: var(--width);
+    height: var(--height);
+    display: inline-block;
+    margin-bottom: 0px;
+    border: 2px;
   }
 }
 
 @media only screen and (min-width: 769px) {
   .node {
+    width: 28px;
+    height: 28px;
+    display: inline-block;
+    margin-bottom: -4px;
   }
 }
 // @media only screen and (min-width: 900px) {
