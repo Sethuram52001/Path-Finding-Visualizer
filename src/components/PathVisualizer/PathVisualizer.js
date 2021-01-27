@@ -41,21 +41,63 @@ class PathVisualizer extends Component {
         window.addEventListener("resize", this.updateDimesions);
     }
 
-    updateDimesions = () => {
-        console.log("update dimesions:- " + "width: " + window.screen.width + " height: " + window.screen.height);
-        console.log("updated width: " + (28 / 1280) * window.screen.width);
-        console.log("updated height: " + (28 / 720) * window.screen.height);
-        const updatedWidth = (28 / 1280) * window.screen.width;
-        const updatedHeight = (28 / 720) * window.screen.height;
-        //footer.style.setProperty('--footer-color', input.value)
-        document.querySelector('node').style.setProperty('--width', updatedWidth);
-        document.querySelector('node').style.setProperty('--height', updatedHeight)
-    }
+    // updateDimesions = () => {
+    //     console.log("update dimesions:- " + "width: " + window.screen.width + " height: " + window.screen.height);
+    //     console.log("updated width: " + (28 / 1280) * window.screen.width);
+    //     console.log("updated height: " + (28 / 720) * window.screen.height);
+    //     const updatedWidth = (28 / 1280) * window.screen.width;
+    //     const updatedHeight = (28 / 720) * window.screen.height;
+    //     //footer.style.setProperty('--footer-color', input.value)
+    //     document.querySelector('node').style.setProperty('--width', updatedWidth);
+    //     document.querySelector('node').style.setProperty('--height', updatedHeight)
+    // }
 
     toggle = () => {
         this.setState({ tooltipOpen: !this.state.tooltipOpen });
     }
 
+/*-------------------------------------------------------------mouse events--------------------------------------------------------------- */
+    // handling mouse events to set up walls
+    handleMouseDown(row, col) {
+        if (this.state.grid[row][col].isStart) {
+            this.setState({ mainIsPressed: "start", mouseIsPressed: false });
+            console.log("start node is clicked");
+        }
+        const newGrid = gridWithWallToggled(this.state.grid, row, col);
+        this.setState({ grid: newGrid, mouseIsPressed: true });
+    }
+
+    handleMouseEnter(row, col) {
+        const { grid } = this.state;
+        if (this.state.mainIsPressed == "start") {
+            console.log("start is being dragged")
+            grid[row][col].isStart = true;
+        }
+        if (this.state.mouseIsPressed && this.state.mainIsPressed === "") {
+        const newGrid = gridWithWallToggled(this.state.grid, row, col);
+        this.setState({ grid: newGrid, mouseIsPressed: true });
+        }
+    }
+
+    handleMouseUp(row,col) {
+        if (this.state.mainIsPressed === "start") {
+            const { grid, startNode } = this.state;
+            grid[row][col].isStart = true;
+            startNode[0] = row;
+            startNode[1] = col;
+            this.getInitialGrid();   
+        }
+        this.setState({ mouseIsPressed: false, mainIsPressed: "" });
+    }
+
+    handleMouseLeave(row, col) {
+        const { grid } = this.state;
+        if (this.state.mainIsPressed == "start") {
+            grid[row][col] = false;
+            this.setState({ grid });
+        }
+    }
+/*
     // handling mouse events to set up walls
     handleMouseDown(row, col) {
         // start node | finish node
@@ -113,6 +155,7 @@ class PathVisualizer extends Component {
         grid[row][col].isStart = true;
         this.getInitialGrid();
     }
+*/
 
 /*----------------------------------------------------------algorithm helper functions---------------------------------------------------------*/
     // dijkstra
