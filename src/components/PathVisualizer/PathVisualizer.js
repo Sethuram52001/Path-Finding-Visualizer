@@ -85,6 +85,7 @@ class PathVisualizer extends Component {
             grid[row][col].isStart = true;
             startNode[0] = row;
             startNode[1] = col;
+            this.setState({ startNode });
             this.getInitialGrid();   
         }
         this.setState({ mouseIsPressed: false, mainIsPressed: "" });
@@ -188,19 +189,20 @@ class PathVisualizer extends Component {
     visualizeDFS = () => {
         if (this.state.isVisualizing)
             return;
-        const {grid} = this.state;
-        const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const { grid, startNode } = this.state;
+        const StartNode = grid[startNode[0]][startNode[1]];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         try {
-            const visitedNodesInOrder = dfs(grid, startNode, finishNode);
+            const visitedNodesInOrder = dfs(grid, StartNode, finishNode);
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
             this.setState({
                 shortestNodes: nodesInShortestPathOrder.length,
                 visitedNodes: visitedNodesInOrder.length
             });
-            animatePath(this, visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
+            animatePath(this, visitedNodesInOrder, nodesInShortestPathOrder, StartNode, finishNode);
         } catch (error) {
             console.log("path not found")
+            console.log(error)
             this.setState({ isPathNotFound: true });
             setTimeout(() => {
                 this.setState({ isPathNotFound: false });
