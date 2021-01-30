@@ -5,6 +5,8 @@
 import { getAllNodes, sortNodesByDistance, getUnvisitedNeighbours } from "./index";
 
 export function dijkstra(grid, startNode, finishNode) {
+  console.log("Start node: " + startNode + " finsih node: " + finishNode);
+  console.log(startNode);
   const visitedNodesInOrder = [];
   startNode.distance = 0;
   const unvisitedNodes = getAllNodes(grid);
@@ -34,6 +36,7 @@ export function dijkstra(grid, startNode, finishNode) {
 function updateUnvisitedNeighbours(node, grid) {
   const unvisitedNeighbors = getUnvisitedNeighbours(node, grid);
   for (const neighbor of unvisitedNeighbors) {
+    console.log(neighbor.distance)
     neighbor.distance = node.distance + 1;
     neighbor.previousNode = node;
   }

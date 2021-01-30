@@ -6,7 +6,6 @@ import { animatePath, animateWalls, setVisualizationState } from "../../visualiz
 import { recursiveDivisionMaze, randomMaze } from "../../maze-algorithms";
 import AppNavbar from "../AppNavbar/AppNavbar";
 import ErrorModal from '../../components/ErrorModal/ErrorModal';
-import { Progress } from "reactstrap";
 import Footer from "../Footer/Footer";
 import TooltipExampleMulti from '../../components/ToolTip/ToolTip';
 
@@ -98,90 +97,36 @@ class PathVisualizer extends Component {
             this.setState({ grid });
         }
     }
-/*
-    // handling mouse events to set up walls
-    handleMouseDown(row, col) {
-        // start node | finish node
-        const { startNode, finishNode,grid } = this.state;
-        let start_x = startNode[0];
-        let start_y = startNode[1];
-        let finish_x = finishNode[0];
-        let finish_y = finishNode[1];
-        if (grid[row][col].isStart) {
-            this.setState({ mainIsPressed: "start" });
-            console.log("start node - main is pressed")
-        }
-        else if (grid[row][col].isFinish) {
-            this.setState({ mainIsPressed: "end" });
-        }
-        else {
-            const newGrid = gridWithWallToggled(this.state.grid, row, col);
-            this.setState({ grid: newGrid, mouseIsPressed: true });
-        }
-    }
-
-    handleMouseEnter(row, col) {
-        if (!this.state.mouseIsPressed)
-            return;
-        // start node | finish node
-        const { grid } = this.state;
-        if (this.state.mainIsPressed == "start") {
-            grid[row][col].isStart = true;
-            this.setState({ 
-                startNode: [row,col]
-            });
-        }
-        else {
-            console.log("walls have no work here")
-            const newGrid = gridWithWallToggled(this.state.grid, row, col);
-            this.setState({ grid: newGrid });
-        }
-    }
-
-    handleMouseLeave = (row, col) => {
-        let arr = this.state.grid;
-        if (this.state.mainClicked !== "") {
-            arr[row][col].isStart = false;
-            //arr[row][col].isEnd=false;
-            this.setState({
-                grid: arr
-            })
-        }
-    }
-
-    handleMouseUp = (row, col) => {
-        this.setState({ mouseIsPressed: false, mainIsPressed: "" });
-        //console.log("mouse up is called")
-        const { grid } = this.state;
-        grid[row][col].isStart = true;
-        this.getInitialGrid();
-    }
-*/
 
 /*----------------------------------------------------------algorithm helper functions---------------------------------------------------------*/
     // dijkstra
     visualizeDijkstra = () => {
         if (this.state.isVisualizing)
             return;
-        const {grid} = this.state;
-        const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const { grid, startNode } = this.state;
+        //const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const StartNode = grid[startNode[0]][startNode[1]];
+        //const StartNode = grid[10][12];
+        console.log(StartNode.isWall);
+        StartNode.isWall = false;
+        console.log(StartNode.isWall)
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-        try {
-            const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+        //try {
+            const visitedNodesInOrder = dijkstra(grid, StartNode, finishNode);
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
             this.setState({
                 shortestNodes: nodesInShortestPathOrder.length,
                 visitedNodes: visitedNodesInOrder.length
             });
-            animatePath(this, visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
-        } catch (error) {
-            console.log("path not found")
-            this.setState({ isPathNotFound: true });
-            setTimeout(() => {
-                this.setState({ isPathNotFound: false });
-            }, 3000);
-        }
-        console.log(this.state.isVisualizing)
+            animatePath(this, visitedNodesInOrder, nodesInShortestPathOrder, StartNode, finishNode);
+        // } catch (error) {
+        //     console.log("path not found")
+        //     this.setState({ isPathNotFound: true });
+        //     setTimeout(() => {
+        //         this.setState({ isPathNotFound: false });
+        //     }, 3000);
+        // }
+        // console.log(this.state.isVisualizing)
         //this.setState({ isVisualizing: !this.state.isVisualizing });
     }
 
@@ -191,6 +136,7 @@ class PathVisualizer extends Component {
             return;
         const { grid, startNode } = this.state;
         const StartNode = grid[startNode[0]][startNode[1]];
+        console.log(StartNode);
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         try {
             const visitedNodesInOrder = dfs(grid, StartNode, finishNode);
@@ -367,9 +313,7 @@ class PathVisualizer extends Component {
                     visitedNodes={visitedNodes}
                     shortestNodes={shortestNodes}
                 />
-                {/* <Progress multi>
-                    <Progress bar animated value={(this.state.shortestNodes/this.state.visitedNodes)*100}>{ ((this.state.shortestNodes/this.state.totalNodes)*100).toPrecision(4) }%</Progress>
-                </Progress> */}
+           
                 <div className="grid">
                     {grid.map((row, rowIdx) => {
                         return (
@@ -488,3 +432,63 @@ const getNewGridWithMaze = (grid, walls) => {
   }
   return newGrid;
 };
+
+/*
+    // handling mouse events to set up walls
+    handleMouseDown(row, col) {
+        // start node | finish node
+        const { startNode, finishNode,grid } = this.state;
+        let start_x = startNode[0];
+        let start_y = startNode[1];
+        let finish_x = finishNode[0];
+        let finish_y = finishNode[1];
+        if (grid[row][col].isStart) {
+            this.setState({ mainIsPressed: "start" });
+            console.log("start node - main is pressed")
+        }
+        else if (grid[row][col].isFinish) {
+            this.setState({ mainIsPressed: "end" });
+        }
+        else {
+            const newGrid = gridWithWallToggled(this.state.grid, row, col);
+            this.setState({ grid: newGrid, mouseIsPressed: true });
+        }
+    }
+
+    handleMouseEnter(row, col) {
+        if (!this.state.mouseIsPressed)
+            return;
+        // start node | finish node
+        const { grid } = this.state;
+        if (this.state.mainIsPressed == "start") {
+            grid[row][col].isStart = true;
+            this.setState({ 
+                startNode: [row,col]
+            });
+        }
+        else {
+            console.log("walls have no work here")
+            const newGrid = gridWithWallToggled(this.state.grid, row, col);
+            this.setState({ grid: newGrid });
+        }
+    }
+
+    handleMouseLeave = (row, col) => {
+        let arr = this.state.grid;
+        if (this.state.mainClicked !== "") {
+            arr[row][col].isStart = false;
+            //arr[row][col].isEnd=false;
+            this.setState({
+                grid: arr
+            })
+        }
+    }
+
+    handleMouseUp = (row, col) => {
+        this.setState({ mouseIsPressed: false, mainIsPressed: "" });
+        //console.log("mouse up is called")
+        const { grid } = this.state;
+        grid[row][col].isStart = true;
+        this.getInitialGrid();
+    }
+*/
