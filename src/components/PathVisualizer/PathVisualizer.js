@@ -59,19 +59,41 @@ class PathVisualizer extends Component {
     // handling mouse events to set up walls
 
     handleMouseDown(row, col) {
-        const newGrid = gridWithWallToggled(this.state.grid, row, col);
-        this.setState({ grid: newGrid, mouseIsPressed: true });
+        const { grid, mainIsPressed } = this.state;
+        const node = grid[row][col];
+        if (node.isStart) {
+            console.log("main is clicked");
+            this.setState({ mainIsPressed: "start" });
+            node.isStart = false;
+        }
+        if (mainIsPressed === "") {
+            const newGrid = gridWithWallToggled(grid, row, col);
+            this.setState({ grid: newGrid, mouseIsPressed: true });
+        }
     }
     
     handleMouseEnter(row, col) {
-        if (this.state.mouseIsPressed) {
-            const newGrid = gridWithWallToggled(this.state.grid, row, col);
+        const { grid, mouseIsPressed, mainIsPressed } = this.state;
+        if (mainIsPressed === "start") {
+            console.log(`main is being dragged in: row:${row} col:${col}`);
+        }
+        if (mouseIsPressed && mainIsPressed === "") {
+            const newGrid = gridWithWallToggled(grid, row, col);
             this.setState({ grid: newGrid, mouseIsPressed: true });
         }
     }
 
-    handleMouseUp() {
-        this.setState({ mouseIsPressed:false });
+    handleMouseUp(row,col) {
+        const { mainIsPressed, grid } = this.state;
+        if (mainIsPressed === "start") {
+            console.log(`main was released at row:${row} col:${col}`)
+            //const node = grid[row][col];
+            //node.isStart = true;
+            const startNode_Pos = [row, col];
+            const newGrid = gridDynamicNodes(grid, row, col);
+            this.setState({ mainIsPressed: "", startNode_Pos, grid: newGrid });
+        }
+        this.setState({ mouseIsPressed: false });
     }
 
     // handleMouseDown(row, col) {
@@ -119,8 +141,9 @@ class PathVisualizer extends Component {
     visualizeDijkstra = () => {
         if (this.state.isVisualizing)
             return;
-        const { grid } = this.state;
-        const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const { grid,startNode_Pos } = this.state;
+        //const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const startNode = grid[startNode_Pos[0]][startNode_Pos[1]];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         try {
             const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
@@ -145,9 +168,10 @@ class PathVisualizer extends Component {
     visualizeDFS = () => {
         if (this.state.isVisualizing)
             return;
-        const { grid } = this.state;
-        const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const { grid, startNode_Pos } = this.state;
+        //const startNode = grid[START_NODE_ROW][START_NODE_COL];
         //console.log(StartNode);
+        const startNode = grid[startNode_Pos[0]][startNode_Pos[1]];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         try {
             const visitedNodesInOrder = dfs(grid, startNode, finishNode);
@@ -171,8 +195,9 @@ class PathVisualizer extends Component {
     visualizeBFS = async () => {
         if (this.state.isVisualizing)
             return;
-        const { grid } = this.state;
-        const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const { grid, startNode_Pos } = this.state;
+        //const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const startNode = grid[startNode_Pos[0]][startNode_Pos[1]];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         try {
             const visitedNodesInOrder = bfs(grid, startNode, finishNode);
@@ -196,8 +221,9 @@ class PathVisualizer extends Component {
         if (this.state.isVisualizing)
             return;
         console.log("a star");
-        const { grid } = this.state;
-        const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const { grid,startNode_Pos } = this.state;
+        //const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const startNode = grid[startNode_Pos[0]][startNode_Pos[1]];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         try {
             const visitedNodesInOrder = astar(grid, startNode, finishNode);
@@ -342,7 +368,7 @@ class PathVisualizer extends Component {
                                             mouseIsPressed={mouseIsPressed}
                                             onMouseDown={(row, col) => this.handleMouseDown(row, col)}
                                             onMouseEnter={(row, col) => this.handleMouseEnter(row, col)}
-                                            onMouseUp={() => this.handleMouseUp(row,col)}
+                                            onMouseUp={(row,col) => this.handleMouseUp(row,col)}
                                             //onMouseLeave={(row, col) => this.handleMouseLeave(row, col)}
                                         />
                                     )
