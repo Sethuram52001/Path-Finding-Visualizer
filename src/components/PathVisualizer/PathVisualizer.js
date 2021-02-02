@@ -57,45 +57,62 @@ class PathVisualizer extends Component {
 
 /*-------------------------------------------------------------mouse events--------------------------------------------------------------- */
     // handling mouse events to set up walls
-    handleMouseDown(row, col) {
-        const { grid } = this.state;
-        const newGrid = gridWithWallToggled(grid, row, col);
-        this.setState({ grid: newGrid, mouseIsPressed: true });
-        // dynamic nodes
-        const node = grid[row][col];
-        if (node.isStart) {
-            console.log("start node is pressed")
-            this.setState({ mainIsPressed: "start" });
-            gridDynamicNodes(grid, row, col);
-        }
-    }
 
+    handleMouseDown(row, col) {
+        const newGrid = gridWithWallToggled(this.state.grid, row, col);
+        this.setState({ grid: newGrid, mouseIsPressed: true });
+    }
+    
     handleMouseEnter(row, col) {
-        const { grid, mouseIsPressed, mainIsPressed } = this.state;
-        if (mouseIsPressed) {
-            const newGrid = getGridWithoutPath(grid, row, col);
+        if (this.state.mouseIsPressed) {
+            const newGrid = gridWithWallToggled(this.state.grid, row, col);
             this.setState({ grid: newGrid, mouseIsPressed: true });
         }
-        if (mainIsPressed === "start") {
-            gridDynamicNodes(grid, row, col);
-        }
     }
 
-    handleMouseLeave(row, col) {
-        console.log("mouse leave")
-        const { grid } = this.state;
-        const node = grid[row][col];
-        node.isStart = false;
+    handleMouseUp() {
+        this.setState({ mouseIsPressed:false });
     }
 
-    handleMouseUp(row, col) {
-        const { grid, mainIsPressed } = this.state;
-        this.setState({ mouseIsPressed: false });
-        if (mainIsPressed === "start") {
-            const newGrid = gridDynamicNodes(grid, row, col);
-            this.setState({ grid: newGrid });
-        }
-    }
+    // handleMouseDown(row, col) {
+    //     const { grid } = this.state;
+    //     const newGrid = gridWithWallToggled(grid, row, col);
+    //     this.setState({ grid: newGrid, mouseIsPressed: true });
+    //     // dynamic nodes
+    //     const node = grid[row][col];
+    //     if (node.isStart) {
+    //         console.log("start node is pressed")
+    //         this.setState({ mainIsPressed: "start" });
+    //         gridDynamicNodes(grid, row, col);
+    //     }
+    // }
+
+    // handleMouseEnter(row, col) {
+    //     const { grid, mouseIsPressed, mainIsPressed } = this.state;
+    //     if (mouseIsPressed) {
+    //         const newGrid = getGridWithoutPath(grid, row, col);
+    //         this.setState({ grid: newGrid, mouseIsPressed: true });
+    //     }
+    //     if (mainIsPressed === "start") {
+    //         gridDynamicNodes(grid, row, col);
+    //     }
+    // }
+
+    // handleMouseLeave(row, col) {
+    //     console.log("mouse leave")
+    //     const { grid } = this.state;
+    //     const node = grid[row][col];
+    //     node.isStart = false;
+    // }
+
+    // handleMouseUp(row, col) {
+    //     const { grid, mainIsPressed } = this.state;
+    //     this.setState({ mouseIsPressed: false });
+    //     if (mainIsPressed === "start") {
+    //         const newGrid = gridDynamicNodes(grid, row, col);
+    //         this.setState({ grid: newGrid });
+    //     }
+    // }
 
 /*----------------------------------------------------------algorithm helper functions---------------------------------------------------------*/
     // dijkstra
