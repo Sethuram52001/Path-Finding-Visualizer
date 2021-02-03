@@ -61,10 +61,15 @@ class PathVisualizer extends Component {
     handleMouseDown(row, col) {
         const { grid, mainIsPressed } = this.state;
         const node = grid[row][col];
-        if (node.isStart) {
+        if (node.isStart === true && node.isFinish === false) {
             console.log("main is clicked");
             this.setState({ mainIsPressed: "start" });
             node.isStart = false;
+        }
+        if (node.isFinish === true && node.isStart === false) {
+            console.log("main is clicked - finish node");
+            this.setState({ mainIsPressed: "finish" });
+            node.isFinish = false;
         }
         if (mainIsPressed === "") {
             const newGrid = gridWithWallToggled(grid, row, col);
@@ -77,6 +82,9 @@ class PathVisualizer extends Component {
         if (mainIsPressed === "start") {
             console.log(`main is being dragged in: row:${row} col:${col}`);
         }
+        if (mainIsPressed === "finish") {
+            console.log(`main is being dragged in: row:${row} col:${col}`);
+        }
         if (mouseIsPressed && mainIsPressed === "") {
             const newGrid = gridWithWallToggled(grid, row, col);
             this.setState({ grid: newGrid, mouseIsPressed: true });
@@ -86,65 +94,32 @@ class PathVisualizer extends Component {
     handleMouseUp(row,col) {
         const { mainIsPressed, grid } = this.state;
         if (mainIsPressed === "start") {
-            console.log(`main was released at row:${row} col:${col}`)
+            console.log(`main was released at row:${row} col:${col}`);
             //const node = grid[row][col];
             //node.isStart = true;
             const startNode_Pos = [row, col];
-            const newGrid = gridDynamicNodes(grid, row, col);
+            const newGrid = gridDynamicNodes(grid, row, col, "start");
             this.setState({ mainIsPressed: "", startNode_Pos, grid: newGrid });
+        }
+        if (mainIsPressed === "finish") {
+            console.log(`main was released at row:${row} col:${col}`);
+            const finishNode_Pos = [row, col];
+            const newGrid = gridDynamicNodes(grid, row, col, "finish");
+            this.setState({ mainIsPressed: "", finishNode_Pos, grid: newGrid });
         }
         this.setState({ mouseIsPressed: false });
     }
-
-    // handleMouseDown(row, col) {
-    //     const { grid } = this.state;
-    //     const newGrid = gridWithWallToggled(grid, row, col);
-    //     this.setState({ grid: newGrid, mouseIsPressed: true });
-    //     // dynamic nodes
-    //     const node = grid[row][col];
-    //     if (node.isStart) {
-    //         console.log("start node is pressed")
-    //         this.setState({ mainIsPressed: "start" });
-    //         gridDynamicNodes(grid, row, col);
-    //     }
-    // }
-
-    // handleMouseEnter(row, col) {
-    //     const { grid, mouseIsPressed, mainIsPressed } = this.state;
-    //     if (mouseIsPressed) {
-    //         const newGrid = getGridWithoutPath(grid, row, col);
-    //         this.setState({ grid: newGrid, mouseIsPressed: true });
-    //     }
-    //     if (mainIsPressed === "start") {
-    //         gridDynamicNodes(grid, row, col);
-    //     }
-    // }
-
-    // handleMouseLeave(row, col) {
-    //     console.log("mouse leave")
-    //     const { grid } = this.state;
-    //     const node = grid[row][col];
-    //     node.isStart = false;
-    // }
-
-    // handleMouseUp(row, col) {
-    //     const { grid, mainIsPressed } = this.state;
-    //     this.setState({ mouseIsPressed: false });
-    //     if (mainIsPressed === "start") {
-    //         const newGrid = gridDynamicNodes(grid, row, col);
-    //         this.setState({ grid: newGrid });
-    //     }
-    // }
 
 /*----------------------------------------------------------algorithm helper functions---------------------------------------------------------*/
     // dijkstra
     visualizeDijkstra = () => {
         if (this.state.isVisualizing)
             return;
-        const { grid,startNode_Pos } = this.state;
+        const { grid,startNode_Pos,finishNode_Pos } = this.state;
         //const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const startNode = grid[startNode_Pos[0]][startNode_Pos[1]];
-        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        //const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const finishNode = grid[finishNode_Pos[0]][finishNode_Pos[1]];
         try {
             const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
@@ -168,11 +143,12 @@ class PathVisualizer extends Component {
     visualizeDFS = () => {
         if (this.state.isVisualizing)
             return;
-        const { grid, startNode_Pos } = this.state;
+        const { grid, startNode_Pos,finishNode_Pos } = this.state;
         //const startNode = grid[START_NODE_ROW][START_NODE_COL];
         //console.log(StartNode);
         const startNode = grid[startNode_Pos[0]][startNode_Pos[1]];
-        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        //const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const finishNode = grid[finishNode_Pos[0]][finishNode_Pos[1]];
         try {
             const visitedNodesInOrder = dfs(grid, startNode, finishNode);
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
@@ -195,10 +171,11 @@ class PathVisualizer extends Component {
     visualizeBFS = async () => {
         if (this.state.isVisualizing)
             return;
-        const { grid, startNode_Pos } = this.state;
+        const { grid, startNode_Pos,finishNode_Pos } = this.state;
         //const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const startNode = grid[startNode_Pos[0]][startNode_Pos[1]];
-        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        //const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const finishNode = grid[finishNode_Pos[0]][finishNode_Pos[1]];
         try {
             const visitedNodesInOrder = bfs(grid, startNode, finishNode);
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
@@ -221,10 +198,11 @@ class PathVisualizer extends Component {
         if (this.state.isVisualizing)
             return;
         console.log("a star");
-        const { grid,startNode_Pos } = this.state;
+        const { grid,startNode_Pos,finishNode_Pos } = this.state;
         //const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const startNode = grid[startNode_Pos[0]][startNode_Pos[1]];
-        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        //const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const finishNode = grid[finishNode_Pos[0]][finishNode_Pos[1]];
         try {
             const visitedNodesInOrder = astar(grid, startNode, finishNode);
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
@@ -440,15 +418,24 @@ const gridWithWallToggled = (grid, row, col) => {
 }
 
 
-const gridDynamicNodes = (grid, row, col) => {
+const gridDynamicNodes = (grid, row, col, pos) => {
     console.log(`start node is currently at: row: ${row} col: ${col}`);
     let newGrid = grid.slice();
     const node = newGrid[row][col];
-    const newNode = {
-        ...node,
-        isStart: true
+    if (pos === "start") {
+        const newNode = {
+            ...node,
+            isStart: true
+        }
+        newGrid[row][col] = newNode;
     }
-    newGrid[row][col] = newNode;
+    if (pos === "finish") {
+        const newNode = {
+            ...node,
+            isFinish: true
+        }
+        newGrid[row][col] = newNode;
+    }
     return newGrid;
 }
 
@@ -482,107 +469,3 @@ const getNewGridWithMaze = (grid, walls) => {
   }
   return newGrid;
 };
-
-/*
-    // handling mouse events to set up walls
-    handleMouseDown(row, col) {
-        // start node | finish node
-        const { startNode, finishNode,grid } = this.state;
-        let start_x = startNode[0];
-        let start_y = startNode[1];
-        let finish_x = finishNode[0];
-        let finish_y = finishNode[1];
-        if (grid[row][col].isStart) {
-            this.setState({ mainIsPressed: "start" });
-            console.log("start node - main is pressed")
-        }
-        else if (grid[row][col].isFinish) {
-            this.setState({ mainIsPressed: "end" });
-        }
-        else {
-            const newGrid = gridWithWallToggled(this.state.grid, row, col);
-            this.setState({ grid: newGrid, mouseIsPressed: true });
-        }
-    }
-
-    handleMouseEnter(row, col) {
-        if (!this.state.mouseIsPressed)
-            return;
-        // start node | finish node
-        const { grid } = this.state;
-        if (this.state.mainIsPressed == "start") {
-            grid[row][col].isStart = true;
-            this.setState({ 
-                startNode: [row,col]
-            });
-        }
-        else {
-            console.log("walls have no work here")
-            const newGrid = gridWithWallToggled(this.state.grid, row, col);
-            this.setState({ grid: newGrid });
-        }
-    }
-
-    handleMouseLeave = (row, col) => {
-        let arr = this.state.grid;
-        if (this.state.mainClicked !== "") {
-            arr[row][col].isStart = false;
-            //arr[row][col].isEnd=false;
-            this.setState({
-                grid: arr
-            })
-        }
-    }
-
-    handleMouseUp = (row, col) => {
-        this.setState({ mouseIsPressed: false, mainIsPressed: "" });
-        //console.log("mouse up is called")
-        const { grid } = this.state;
-        grid[row][col].isStart = true;
-        getInitialGrid();
-    }
-
-
-    // idk
-        handleMouseDown(row, col) {
-        if (this.state.grid[row][col].isStart) {
-            this.setState({ mainIsPressed: "start", mouseIsPressed: false });
-            console.log("start node is clicked");
-            const newGrid = gridDynamicStartFinish(this.state.grid, row, col);
-        }
-            const newGrid = gridWithWallToggled(this.state.grid, row, col);
-        this.setState({ grid: newGrid, mouseIsPressed: true });
-    }
-
-    handleMouseEnter(row, col) {
-        const { grid } = this.state;
-        if (this.state.mainIsPressed == "start") {
-            console.log("start is being dragged")
-            grid[row][col].isStart = true;
-        }
-        if (this.state.mouseIsPressed && this.state.mainIsPressed === "") {
-        const newGrid = gridWithWallToggled(this.state.grid, row, col);
-        this.setState({ grid: newGrid, mouseIsPressed: true });
-        }
-    }
-
-    handleMouseUp(row,col) {
-        if (this.state.mainIsPressed === "start") {
-            const { grid, startNode } = this.state;
-            grid[row][col].isStart = true;
-            startNode[0] = row;
-            startNode[1] = col;
-            this.setState({ startNode });
-            getInitialGrid();   
-        }
-        this.setState({ mouseIsPressed: false, mainIsPressed: "" });
-    }
-
-    handleMouseLeave(row, col) {
-        const { grid } = this.state;
-        if (this.state.mainIsPressed == "start") {
-            grid[row][col] = false;
-            this.setState({ grid });
-        }
-    }
-*/
