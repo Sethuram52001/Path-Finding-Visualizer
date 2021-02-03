@@ -254,9 +254,11 @@ class PathVisualizer extends Component {
         if (this.state.isVisualizing)
             return;
         this.setState({ isVisualizing: true });
-        const { grid } = this.state;
-        const startNode = grid[START_NODE_ROW][START_NODE_COL];
-        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const { grid, startNode_Pos,finishNode_Pos } = this.state;
+        //const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const startNode = grid[startNode_Pos[0]][startNode_Pos[1]];
+        //const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const finishNode = grid[finishNode_Pos[0]][finishNode_Pos[1]];
         const walls = recursiveDivisionMaze(grid, startNode, finishNode);
         console.log(walls);
         //animateWalls(this,walls, grid);
@@ -267,9 +269,11 @@ class PathVisualizer extends Component {
         if (this.state.isVisualizing)
             return;
         this.setState({ isVisualizing: true });
-        const { grid } = this.state;
-        const startNode = grid[START_NODE_ROW][START_NODE_COL];
-        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const { grid,startNode_Pos,finishNode_Pos } = this.state;
+        //const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const startNode = grid[startNode_Pos[0]][startNode_Pos[1]];
+        //const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const finishNode = grid[finishNode_Pos[0]][finishNode_Pos[1]];
         const walls = randomMaze(grid, startNode, finishNode);
         console.log(walls);
         this.animateWalls(walls, grid);
