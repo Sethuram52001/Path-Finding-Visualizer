@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import "./Node.scss";
-import xwing from "../../images/x-wing.png";
-import deathstar from "../../images/death-star.png";
 
 const Node = (props) => {
     const { row, col, isStart, isFinish, isWall, onMouseDown, onMouseEnter, onMouseUp } = props; //, onMouseLeave

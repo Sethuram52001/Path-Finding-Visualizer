@@ -31,25 +31,9 @@ class PathVisualizer extends Component {
 
     // creates the grid when the component is mounted
     componentDidMount() {
-        // this.setState({
-        //     startNode: [START_NODE_ROW, START_NODE_COL],
-        //     finishNode: [FINISH_NODE_ROW, FINISH_NODE_COL]
-        // });
         let grid = getInitialGrid();
-        this.setState({ grid });
-        //window.addEventListener("resize", this.updateDimesions);
+        this.setState({ grid });   
     }
-
-    // updateDimesions = () => {
-    //     console.log("update dimesions:- " + "width: " + window.screen.width + " height: " + window.screen.height);
-    //     console.log("updated width: " + (28 / 1280) * window.screen.width);
-    //     console.log("updated height: " + (28 / 720) * window.screen.height);
-    //     const updatedWidth = (28 / 1280) * window.screen.width;
-    //     const updatedHeight = (28 / 720) * window.screen.height;
-    //     //footer.style.setProperty('--footer-color', input.value)
-    //     document.querySelector('node').style.setProperty('--width', updatedWidth);
-    //     document.querySelector('node').style.setProperty('--height', updatedHeight)
-    // }
 
     toggle = () => {
         this.setState({ tooltipOpen: !this.state.tooltipOpen });
@@ -115,11 +99,11 @@ class PathVisualizer extends Component {
     visualizeDijkstra = () => {
         if (this.state.isVisualizing)
             return;
-        const { grid,startNode_Pos,finishNode_Pos } = this.state;
-        //const startNode = grid[START_NODE_ROW][START_NODE_COL];
-        const startNode = grid[startNode_Pos[0]][startNode_Pos[1]];
-        //const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-        const finishNode = grid[finishNode_Pos[0]][finishNode_Pos[1]];
+        const { grid, startNode_Pos, finishNode_Pos } = this.state;
+        const start_X = startNode_Pos[0], start_Y = startNode_Pos[1];
+        const startNode = grid[start_X][start_Y];
+        const finish_X = finishNode_Pos[0], finish_Y = finishNode_Pos[1];
+        const finishNode = grid[finish_X][finish_Y];
         try {
             const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
@@ -143,12 +127,11 @@ class PathVisualizer extends Component {
     visualizeDFS = () => {
         if (this.state.isVisualizing)
             return;
-        const { grid, startNode_Pos,finishNode_Pos } = this.state;
-        //const startNode = grid[START_NODE_ROW][START_NODE_COL];
-        //console.log(StartNode);
-        const startNode = grid[startNode_Pos[0]][startNode_Pos[1]];
-        //const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-        const finishNode = grid[finishNode_Pos[0]][finishNode_Pos[1]];
+        const { grid, startNode_Pos, finishNode_Pos } = this.state;
+        const start_X = startNode_Pos[0], start_Y = startNode_Pos[1];
+        const startNode = grid[start_X][start_Y];
+        const finish_X = finishNode_Pos[0], finish_Y = finishNode_Pos[1];
+        const finishNode = grid[finish_X][finish_Y];
         try {
             const visitedNodesInOrder = dfs(grid, startNode, finishNode);
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
@@ -171,11 +154,11 @@ class PathVisualizer extends Component {
     visualizeBFS = async () => {
         if (this.state.isVisualizing)
             return;
-        const { grid, startNode_Pos,finishNode_Pos } = this.state;
-        //const startNode = grid[START_NODE_ROW][START_NODE_COL];
-        const startNode = grid[startNode_Pos[0]][startNode_Pos[1]];
-        //const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-        const finishNode = grid[finishNode_Pos[0]][finishNode_Pos[1]];
+        const { grid, startNode_Pos, finishNode_Pos } = this.state;
+        const start_X = startNode_Pos[0], start_Y = startNode_Pos[1];
+        const startNode = grid[start_X][start_Y];
+        const finish_X = finishNode_Pos[0], finish_Y = finishNode_Pos[1];
+        const finishNode = grid[finish_X][finish_Y];
         try {
             const visitedNodesInOrder = bfs(grid, startNode, finishNode);
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
@@ -197,12 +180,11 @@ class PathVisualizer extends Component {
     visualizeAstar = () => {
         if (this.state.isVisualizing)
             return;
-        console.log("a star");
         const { grid,startNode_Pos,finishNode_Pos } = this.state;
-        //const startNode = grid[START_NODE_ROW][START_NODE_COL];
-        const startNode = grid[startNode_Pos[0]][startNode_Pos[1]];
-        //const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-        const finishNode = grid[finishNode_Pos[0]][finishNode_Pos[1]];
+        const start_X = startNode_Pos[0], start_Y = startNode_Pos[1];
+        const startNode = grid[start_X][start_Y];
+        const finish_X = finishNode_Pos[0], finish_Y = finishNode_Pos[1];
+        const finishNode = grid[finish_X][finish_Y];
         try {
             const visitedNodesInOrder = astar(grid, startNode, finishNode);
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
@@ -369,25 +351,22 @@ export default PathVisualizer;
 
 /*------------------------------------------------------------helper functions----------------------------------------------------------------*/
 
-// prev getInitialGrid func was here
-    // creating the initial grid, calls the createNode() function
-    // to initialise the node with initial properties
-    //const 
-    const getInitialGrid = () => {
-        let grid = [];
-        //const { startNode, finishNode } = this.state;
-        const startNode_Pos = [10, 15];
-        const finishNode_Pos = [10, 35];
-        for (let row = 0; row < 20; row++) {
-            const currRow = [];
-            for (let col = 0; col < 40; col++) { //  previously I had it as 20*50
-                //currRow.push(createNode(row, col));
-                currRow.push(createNode(row, col, startNode_Pos, finishNode_Pos));
-            }
-            grid.push(currRow);
+// creating the initial grid, calls the createNode() function
+// to initialise the node with initial properties
+const getInitialGrid = () => {
+    let grid = [];
+    //const { startNode, finishNode } = this.state;
+    const startNode_Pos = [10, 15];
+    const finishNode_Pos = [10, 35];
+    for (let row = 0; row < 20; row++) {
+        const currRow = [];
+        for (let col = 0; col < 40; col++) { //  previously I had it as 20*50
+            currRow.push(createNode(row, col, startNode_Pos, finishNode_Pos));
         }
-        return grid;
+        grid.push(currRow);
     }
+    return grid;
+}
 
 // initialising the node with its initial properties
 const createNode = (row, col, startNode, finishNode) => {
