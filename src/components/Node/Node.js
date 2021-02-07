@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import "./Node.scss";
 
 const Node = (props) => {
-    const { row, col, isStart, isFinish, isWall, onMouseDown, onMouseEnter, onMouseUp } = props; //, onMouseLeave
+    const { row, col, isStart, isFinish, isWall, onMouseDown, onMouseEnter, onMouseUp, onMouseLeave } = props;
     const extraClassName = isStart ? 'node-start' : isFinish ? 'node-finish' : isWall ? 'node-wall' : '' ; 
 
     return ( 
@@ -12,7 +12,7 @@ const Node = (props) => {
             onMouseDown={() => onMouseDown(row, col)}
             onMouseEnter={() => onMouseEnter(row, col)}
             onMouseUp={() => onMouseUp(row,col)}
-            //onMouseLeave={() => onMouseLeave(row, col)}
+            onMouseLeave={() => onMouseLeave(row, col)}
         >
         </div>
      );

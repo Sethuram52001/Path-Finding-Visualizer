@@ -65,9 +65,13 @@ class PathVisualizer extends Component {
         const { grid, mouseIsPressed, mainIsPressed } = this.state;
         if (mainIsPressed === "start") {
             console.log(`main is being dragged in: row:${row} col:${col}`);
+            const newGrid = gridDynamicNodes(grid, row, col, "start");
+            this.setState({ grid: newGrid });
         }
         if (mainIsPressed === "finish") {
             console.log(`main is being dragged in: row:${row} col:${col}`);
+            const newGrid = gridDynamicNodes(grid, row, col, "finish");
+            this.setState({ grid: newGrid });
         }
         if (mouseIsPressed && mainIsPressed === "") {
             const newGrid = gridWithWallToggled(grid, row, col);
@@ -79,8 +83,7 @@ class PathVisualizer extends Component {
         const { mainIsPressed, grid } = this.state;
         if (mainIsPressed === "start") {
             console.log(`main was released at row:${row} col:${col}`);
-            //const node = grid[row][col];
-            //node.isStart = true;
+            this.setState({ mainIsPressed: "" });
             const startNode_Pos = [row, col];
             const newGrid = gridDynamicNodes(grid, row, col, "start");
             this.setState({ mainIsPressed: "", startNode_Pos, grid: newGrid });
@@ -92,6 +95,29 @@ class PathVisualizer extends Component {
             this.setState({ mainIsPressed: "", finishNode_Pos, grid: newGrid });
         }
         this.setState({ mouseIsPressed: false });
+    }
+
+    handleMouseLeave(row, col) {
+        const { grid, mainIsPressed } = this.state;
+        if (mainIsPressed === "")
+            return;
+        let newGrid = grid.slice();
+        const node = newGrid[row][col];
+        if (mainIsPressed === "start") {
+            const newNode = {
+                ...node,
+                isStart: false
+            }
+            newGrid[row][col] = newNode;
+        }
+        if (mainIsPressed === "finish") {
+            const newNode = {
+                ...node,
+                isFinish: false
+            }
+            newGrid[row][col] = newNode;
+        }
+        this.setState({ grid: newGrid });
     }
 
 /*----------------------------------------------------------algorithm helper functions---------------------------------------------------------*/
@@ -333,7 +359,7 @@ class PathVisualizer extends Component {
                                             onMouseDown={(row, col) => this.handleMouseDown(row, col)}
                                             onMouseEnter={(row, col) => this.handleMouseEnter(row, col)}
                                             onMouseUp={(row,col) => this.handleMouseUp(row,col)}
-                                            //onMouseLeave={(row, col) => this.handleMouseLeave(row, col)}
+                                            onMouseLeave={(row, col) => this.handleMouseLeave(row, col)}
                                         />
                                     )
                                 })}
