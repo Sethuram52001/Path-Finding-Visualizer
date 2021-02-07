@@ -1,34 +1,24 @@
-$outline-light-theme: black;
-$outline-dark-theme: white;
-
-.DarkMode {
-  .node {
-    outline: 1px solid black;
-  }
-}
-
-.LightMode {
-  .node {
-    outline: 1px solid black;
-  }
-}
+$mobile: 320px;
+$tablet: 481px;
+$laptop: 769px;
 
 .node {
-  @media only screen and (min-width: 320px) {
-    width: 8px;//2.1875vw 28px
-    height: 20px;//3.89vh 28px
+  @media only screen and (min-width: $mobile) {
+    width: 8px;
+    height: 20px;
   }
-  @media only screen and (min-width: 481px) {
+  @media only screen and (min-width: $tablet) {
     width: 17px;
     height: 17px;
   }
-  @media only screen and (min-width: 769px) {
-    width: 28px;//2.1875vw 28px
-    height: 28px;//3.89vh 28px
+  @media only screen and (min-width: $laptop) {
+    width: 28px;
+    height: 28px;
   }
   display: inline-block;
   margin-bottom: -4px;
   box-sizing: border-box;
+  outline: 1px solid black;
 }
 
 
@@ -121,10 +111,6 @@ $outline-dark-theme: white;
   }
 }
 
-
-/*.node-shortest-path {
-    background-color: yellow;
-}*/
 .node-shortest-path {
   animation-name: shortestPath;
   animation-duration: 1.5s;

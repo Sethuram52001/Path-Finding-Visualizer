@@ -1,44 +1,23 @@
-// my lap - width - 1280 px
-/*
-320px — 480px: Mobile devices
-481px — 768px: iPads, Tablets
-769px — 1024px: Small screens, laptops
-1025px — 1200px: Desktops, large screens
-*/
+$mobile: 320px;
+$tablet: 481px;
+$laptop: 769px;
+
 .DarkMode {
   .grid {
     background-color: #151a35;
   }
 }
 
-@media only screen and (min-width: 320px) {
-  .grid {
+.grid {
+  @media only screen and (min-width: $mobile) {
     margin: 20px;
   }
-}
-
-@media only screen and (min-width: 481px) {
-  .grid {
+  @media only screen and (min-width: $tablet) {
     margin: 42px;
   }
-}
-
-@media only screen and (min-width: 769px) {
-  .grid {
-    //margin: 0 auto;
+  @media only screen and (min-width: $laptop) {
     margin: 70px;
   }
 }
 
-// @media only screen and (min-width: 900px) {
-// .grid {
-//   margin: 70px; /*60px*/
-// }
-// }
-
-// @media only screen and (max-width: 899px) {
-//     .grid {
-//         margin: 30px;
-//     }
-// }
 
