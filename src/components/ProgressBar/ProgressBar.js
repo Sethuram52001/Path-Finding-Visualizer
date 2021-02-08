@@ -19,14 +19,3 @@ const ProgressBar = (props) => {
 }
  
 export default ProgressBar;
-
-/*
-       <NavbarText>
-          visited nodes: {props.visitedNodes}
-          <Progress value={props.visitedNodes/800} color="danger" />
-        </NavbarText>
-        <NavbarText>
-          shortes path: {props.shortestNodes}
-          <Progress value={props.shortestNodes/800} color="success" />
-        </NavbarText>
- */

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import "./AppNavbar.scss";
 import {
   Collapse,
   Navbar,
@@ -41,7 +42,6 @@ const AppNavbar = (props) => {
               <DropdownMenu right>
                 <DropdownItem>
                   <Button onClick={() => { props.handleDijkstra(); props.handleVisualization() }}>Dijkstra</Button>
-                  {/* <Button onClick={ props.handleDijkstra}>Dijkstra</Button> */}
                 </DropdownItem>
                 <DropdownItem>
                   <Button onClick={() => { props.handleDFS(); props.handleVisualization() }}>DFS</Button>              
@@ -72,7 +72,7 @@ const AppNavbar = (props) => {
         <NavbarText>
           <ProgressBar visitedNodes={props.visitedNodes} shortestNodes={props.shortestNodes} />
         </NavbarText>
-        <NavbarText>
+        <NavbarText className="clear-functions">
           <ButtonGroup>
             <Button id={"Tooltip-" + 0} onClick={props.handleClearPath}>Clear Path</Button>
             <Button id={"Tooltip-" + 1} onClick={props.handleClearGrid}>Clear Grid</Button>
