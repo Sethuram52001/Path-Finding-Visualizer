@@ -31,7 +31,8 @@ class PathVisualizer extends Component {
 
     // creates the grid when the component is mounted
     componentDidMount() {
-        let grid = getInitialGrid();
+        const { startNode_Pos, finishNode_Pos } = this.state;
+        let grid = getInitialGrid(startNode_Pos,finishNode_Pos);
         this.setState({ grid });   
     }
 
@@ -222,14 +223,17 @@ class PathVisualizer extends Component {
     clearGrid = () => {
         if (this.state.isVisualizing)
             return;
+        const { startNode_Pos, finishNode_Pos } = this.state;
+        const start_X = startNode_Pos[0], start_Y = startNode_Pos[1];
+        const finish_X = finishNode_Pos[0], finish_Y = finishNode_Pos[1];
         for (let row = 0; row < this.state.grid.length; row++) {
             for (let col = 0; col < this.state.grid[0].length; col++) {
-                if (!((row === START_NODE_ROW && col === START_NODE_COL) || (row === FINISH_NODE_ROW && col === FINISH_NODE_COL))) {
+                if (!((row === start_X && col === start_Y) || (row === finish_X && col === finish_Y))) {
                     document.getElementById(`node-${row}-${col}`).className = "node";
                 }
             }
         }
-        const newGrid = getInitialGrid();
+        const newGrid = getInitialGrid(startNode_Pos,finishNode_Pos);
         this.setState({ grid: newGrid, visitedNodes: 0, shortestNodes: 0 });
     }
 
@@ -356,10 +360,10 @@ export default PathVisualizer;
 
 // creating the initial grid, calls the createNode() function
 // to initialise the node with initial properties
-const getInitialGrid = () => {
+const getInitialGrid = (startNode_Pos,finishNode_Pos) => {
     let grid = [];
-    const startNode_Pos = [10, 15];
-    const finishNode_Pos = [10, 35];
+    // const startNode_Pos = [10, 15];
+    // const finishNode_Pos = [10, 35];
     for (let row = 0; row < 20; row++) {
         const currRow = [];
         for (let col = 0; col < 40; col++) { //  previously I had it as 20*50
