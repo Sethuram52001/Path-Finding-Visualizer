@@ -102,14 +102,16 @@ class PathVisualizer extends Component {
         if (mainIsPressed === "start") {
             const newNode = {
                 ...node,
-                isStart: false
+                isStart: false,
+                isWall: false
             }
             newGrid[row][col] = newNode;
         }
         if (mainIsPressed === "finish") {
             const newNode = {
                 ...node,
-                isFinish: false
+                isFinish: false,
+                isWall: false
             }
             newGrid[row][col] = newNode;
         }
