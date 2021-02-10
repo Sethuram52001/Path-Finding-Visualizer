@@ -6,6 +6,7 @@ import {setVisualizationState} from "./index";
 
 export const animatePath = (klass, visitedNodesInOrder, nodesInShortestPath, startNode, finishNode) => {
   for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+    // calls the func to animate the shortest path
     if (i === visitedNodesInOrder.length) {
       setTimeout(() => {
         animateShortestPath(nodesInShortestPath);
@@ -13,6 +14,7 @@ export const animatePath = (klass, visitedNodesInOrder, nodesInShortestPath, sta
       }, 10 * i);
       return;
     }
+    // sets the node's class to node-visited class
     setTimeout(() => {
       const node = visitedNodesInOrder[i];
       if ((node !== startNode) && (node !== finishNode))
