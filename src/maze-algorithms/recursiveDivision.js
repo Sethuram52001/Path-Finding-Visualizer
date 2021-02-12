@@ -82,14 +82,15 @@ function addWall(dir, num, vertical, horizontal, startNode, finishNode) {
     }
   }
   if (!isStartFinish) {
-    tempWalls.splice(generateRandomNumber(tempWalls.length), 1);
+    let rand = generateRandomNumber(tempWalls.length);
+    tempWalls= [...tempWalls.slice(0, rand), ...tempWalls.slice(rand + 1)];
   }
   for (let wall of tempWalls) {
     walls.push(wall);
   }
 }
 
-// func to generate a random number
+// func to generate a random number for the generation of walls in tempWalls
 function generateRandomNumber(max) {
   let randomNum = Math.floor(Math.random() * (max / 2));
   if (randomNum % 2 !== 0) {
