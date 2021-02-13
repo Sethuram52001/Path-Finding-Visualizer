@@ -1,15 +1,12 @@
 import React from 'react';
 import { Modal, ModalHeader } from 'reactstrap';
 
-const ErrorModal = (props) => {
-  const {
-    className
-  } = props;
+const ErrorModal = () => {
 
   return (
     <div>
-      <Modal isOpen={true} className={className}>
-        <ModalHeader>Path not found</ModalHeader>
+      <Modal isOpen={true}>
+        <ModalHeader style={{color: 'black'}}>Path is not found</ModalHeader>
       </Modal>
     </div>
   );

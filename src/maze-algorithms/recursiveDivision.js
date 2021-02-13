@@ -14,6 +14,7 @@ export function recursiveDivisionMaze(grid, startNode, finishNode) {
   return walls;
 }
 
+// main func 
 function getRecursiveWalls(vertical, horizontal, grid, startNode, finishNode) {
   if (vertical.length < 2 || horizontal.length < 2)
     return;
@@ -31,12 +32,12 @@ function getRecursiveWalls(vertical, horizontal, grid, startNode, finishNode) {
   // recursive part where the approach to 
   // start horizontal or vertical is dependent on dir variable
   if (dir === 0) {
-    addWall(dir, num, vertical, horizontal, startNode, finishNode);
+    addWalls(dir, num, vertical, horizontal, startNode, finishNode);
     getRecursiveWalls(vertical.slice(0, vertical.indexOf(num)), horizontal, grid, startNode, finishNode);
     getRecursiveWalls(vertical.slice(vertical.indexOf(num) + 1), horizontal, grid, startNode, finishNode);
   }
   else {
-    addWall(dir, num, vertical, horizontal, startNode, finishNode);
+    addWalls(dir, num, vertical, horizontal, startNode, finishNode);
     getRecursiveWalls(vertical, horizontal.slice(0, horizontal.indexOf(num)), grid, startNode, finishNode);
     getRecursiveWalls(vertical, horizontal.slice(horizontal.indexOf(num) + 1), grid, startNode, finishNode);
   }
@@ -56,7 +57,7 @@ function generateOddRandomNumber(arr) {
 } 
 
 // func to push the coordinates of nodes into wall array
-function addWall(dir, num, vertical, horizontal, startNode, finishNode) {
+function addWalls(dir, num, vertical, horizontal, startNode, finishNode) {
   let isStartFinish = false;
   let tempWalls = [];
   if (dir === 0) {

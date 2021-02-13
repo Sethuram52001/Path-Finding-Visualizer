@@ -34,8 +34,8 @@ const AppNavbar = (props) => {
             <NavItem id={"Tooltip-" + 6}>
               <NavLink href="https://github.com/Sethuram52001/Path-Finding-Visualizer">GitHub</NavLink>
             </NavItem>
-            <UncontrolledDropdown id={"Tooltip-" + 5} nav inNavbar>
-              <DropdownToggle nav caret>
+            <UncontrolledDropdown nav inNavbar>
+              <DropdownToggle id={"Tooltip-" + 5} nav caret>
                 Algorithms
               </DropdownToggle>
               <DropdownMenu right>
@@ -53,8 +53,8 @@ const AppNavbar = (props) => {
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
-            <UncontrolledDropdown id={"Tooltip-" + 4} nav inNavbar>
-              <DropdownToggle nav caret>
+            <UncontrolledDropdown nav inNavbar>
+              <DropdownToggle id={"Tooltip-" + 4} nav caret>
                 Generate Maze
               </DropdownToggle>
               <DropdownMenu right>
