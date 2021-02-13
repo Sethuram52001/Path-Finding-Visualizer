@@ -22,17 +22,37 @@ const TooltipItem = props => {
   );
 };
 
-const TooltipExampleMulti = props => {
+const TooltipExampleMulti = () => {
   return (
     <>
       {[
         {
           placement: "bottom",
-          text: "clearPathToolTip"
+          text: "Clears the paths created during algorithm visulaization"
         },
         {
           placement: "bottom",
-          text: "clearGridToolTip"
+          text: "Clears the paths and walls which were created"
+        },
+        {
+          placement: "bottom",
+          text: "Dark mode toggle"
+        },
+        {
+          placement: "bottom",
+          text: "Number of nodes traversed"
+        },
+        {
+          placement: "right",
+          text: "maze generation algorithms"
+        },
+        {
+          placement: "auto",
+          text: "path-finding algorithms"
+        },
+        {
+          placement: "auto",
+          text: "Github repo for this project"
         }
       ].map((tooltip, i) => {
         return <TooltipItem key={i} item={tooltip} id={i} />;

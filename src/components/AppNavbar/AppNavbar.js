@@ -14,8 +14,7 @@ import {
   DropdownItem,
   NavbarText,
   Button,
-  ButtonGroup,
-  Progress
+  ButtonGroup
 } from 'reactstrap';
 import DarkModeToggle from "../DarkModeToggle/DarkModeToggle";
 import ProgressBar from "../ProgressBar/ProgressBar";
@@ -32,10 +31,10 @@ const AppNavbar = (props) => {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
-            <NavItem>
+            <NavItem id={"Tooltip-" + 6}>
               <NavLink href="https://github.com/Sethuram52001/Path-Finding-Visualizer">GitHub</NavLink>
             </NavItem>
-            <UncontrolledDropdown nav inNavbar>
+            <UncontrolledDropdown id={"Tooltip-" + 5} nav inNavbar>
               <DropdownToggle nav caret>
                 Algorithms
               </DropdownToggle>
@@ -54,7 +53,7 @@ const AppNavbar = (props) => {
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
-            <UncontrolledDropdown nav inNavbar>
+            <UncontrolledDropdown id={"Tooltip-" + 4} nav inNavbar>
               <DropdownToggle nav caret>
                 Generate Maze
               </DropdownToggle>
@@ -69,7 +68,7 @@ const AppNavbar = (props) => {
             </UncontrolledDropdown>
           </Nav>  
         </Collapse>
-        <NavbarText>
+        <NavbarText id={"Tooltip-" + 3}>
           <ProgressBar visitedNodes={props.visitedNodes} shortestNodes={props.shortestNodes} />
         </NavbarText>
         <NavbarText className="clear-functions">
@@ -78,7 +77,7 @@ const AppNavbar = (props) => {
             <Button id={"Tooltip-" + 1} onClick={props.handleClearGrid}>Clear Grid</Button>
           </ButtonGroup>          
         </NavbarText>
-        <NavbarText>
+        <NavbarText id={"Tooltip-" + 2}>
           <DarkModeToggle />
         </NavbarText>
       </Navbar>

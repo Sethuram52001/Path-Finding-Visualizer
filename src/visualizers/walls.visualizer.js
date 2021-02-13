@@ -1,5 +1,9 @@
 import { setVisualizationState } from "./index";
 
+// it's been a long time since I visited this part of code
+// but I believe there's some correction need to be made to work with 
+// acutal app to set state and etc.,
+// correction: setting the grid with the walls, animation works fine
 export function animateWalls(klass, walls, grid) {
     for (let i = 0; i <= walls.length; i++) {
         // set the visualization state
