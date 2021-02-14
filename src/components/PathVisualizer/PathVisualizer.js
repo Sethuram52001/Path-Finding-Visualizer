@@ -131,6 +131,8 @@ class PathVisualizer extends Component {
         try {
             const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+            if (nodesInShortestPathOrder.length === 1)
+                throw "not possible";
             this.setState({
                 shortestNodes: nodesInShortestPathOrder.length,
                 visitedNodes: visitedNodesInOrder.length
@@ -208,6 +210,9 @@ class PathVisualizer extends Component {
         try {
             const visitedNodesInOrder = astar(grid, startNode, finishNode);
             const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+            if (nodesInShortestPathOrder.length === 1) {
+                throw "not possible";
+            }
             this.setState({
                 shortestNodes: nodesInShortestPathOrder.length,
                 visitedNodes: visitedNodesInOrder.length
