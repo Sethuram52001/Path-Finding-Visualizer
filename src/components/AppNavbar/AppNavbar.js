@@ -49,7 +49,7 @@ const AppNavbar = (props) => {
                   <Button onClick={() => { props.handleBFS(); props.handleVisualization() }}>BFS</Button>
                 </DropdownItem>
                 <DropdownItem>
-                  <Button onClick={() => { props.handleAstar(); props.handleVisualization() }}>Astar</Button>
+                  <Button onClick={() => { props.handleAstar(); props.handleVisualization() }}>A*</Button>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>

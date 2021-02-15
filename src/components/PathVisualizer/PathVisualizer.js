@@ -139,12 +139,12 @@ class PathVisualizer extends Component {
             });
             animatePath(this, visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
         } catch (error) {
-            this.setState({ isPathNotFound: true });
+            this.setState({ isPathNotFound: true, isVisualizing: true });
             setTimeout(() => {
-                this.setState({ isPathNotFound: false });
+                this.setState({ isPathNotFound: false, isVisualizing: false });
             }, 3000);
         }
-        this.setState({ isVisualizing: !this.state.isVisualizing });
+        //this.setState({ isVisualizing: false });
     }
 
     // dfs
@@ -166,15 +166,15 @@ class PathVisualizer extends Component {
             animatePath(this, visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
         } catch (error) {
             console.log(error)
-            this.setState({ isPathNotFound: true });
+            this.setState({ isPathNotFound: true, isVisualizing: true });
             setTimeout(() => {
-                this.setState({ isPathNotFound: false });
+                this.setState({ isPathNotFound: false, isVisualizing: false });
             }, 3000);
         }
     }
 
     // bfs
-    visualizeBFS = async () => {
+    visualizeBFS = () => {
         if (this.state.isVisualizing)
             return;
         const { grid, startNode_Pos, finishNode_Pos } = this.state;
@@ -191,9 +191,9 @@ class PathVisualizer extends Component {
             });
             animatePath(this, visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
         } catch (error) {
-            this.setState({ isPathNotFound: true });
+            this.setState({ isPathNotFound: true, isVisualizing: true });
             setTimeout(() => {
-                this.setState({ isPathNotFound: false });
+                this.setState({ isPathNotFound: false, isVisualizing: false });
             }, 3000);
         }
     }
@@ -219,9 +219,9 @@ class PathVisualizer extends Component {
             });
             animatePath(this, visitedNodesInOrder, nodesInShortestPathOrder, startNode, finishNode);
         } catch (error) {
-            this.setState({ isPathNotFound: true });
+            this.setState({ isPathNotFound: true, isVisualizing: true });
             setTimeout(() => {
-                this.setState({ isPathNotFound: false });
+                this.setState({ isPathNotFound: false, isVisualizing: false });
             }, 3000);
         }
     }

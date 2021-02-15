@@ -47,7 +47,7 @@ const TooltipExampleMulti = () => {
           text: "maze generation algorithms"
         },
         {
-          placement: "auto",
+          placement: "left",
           text: "path-finding algorithms"
         },
         {
