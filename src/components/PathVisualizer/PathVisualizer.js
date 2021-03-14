@@ -8,6 +8,7 @@ import AppNavbar from "../AppNavbar/AppNavbar";
 import ErrorModal from '../../components/ErrorModal/ErrorModal';
 import Footer from "../Footer/Footer";
 import TooltipExampleMulti from '../../components/ToolTip/ToolTip';
+import Legend from '../Legend/Legend';
 
 // constants - initial coordinates for start and finish nodes 
 const START_NODE_ROW = 10;
@@ -332,6 +333,8 @@ class PathVisualizer extends Component {
                     visitedNodes={visitedNodes}
                     shortestNodes={shortestNodes}
                 />
+
+                <Legend />
            
                 <div className="grid">
                     {grid.map((row, rowIdx) => {

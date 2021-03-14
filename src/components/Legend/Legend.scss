@@ -1,0 +1,37 @@
+.start-node {
+    background-color: green;
+    height: 25px;
+    width: 25px;
+}
+
+.target-node {
+    background-color: red;
+    height: 25px;
+    width: 25px;
+}
+
+.wall-node {
+    background-color: black;
+    height: 25px;
+    width: 25px;
+    outline: 1px solid white;
+}
+
+.unvisited-node {
+    background-color: white;
+    height: 25px;
+    width: 25px;
+    outline: 1px solid black;
+}
+
+.visited-node {
+    background-color: rgba(0, 190, 218, 0.75);
+    height: 25px;
+    width: 25px;
+}
+
+.shortest-path-node {
+    background-color: rgb(255, 123, 0);
+    height: 25px;
+    width: 25px;
+}
